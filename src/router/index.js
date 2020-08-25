@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Start from '../views/start'
 import Steps from "@/views/steps"
+import Finish from "@/views/finish"
 
 Vue.use(VueRouter)
 
@@ -11,10 +12,15 @@ const routes = [{
         component: Start,
     },
     {
-        path: "/steps",
+        path: "/questions",
         name: "Steps",
         component: Steps,
     },
+    {
+        path: "/finish",
+        name: "Finish",
+        component: Finish
+    }
 ];
 
 const router = new VueRouter({

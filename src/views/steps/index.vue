@@ -10,7 +10,7 @@
 <script>
 import Vue from 'vue'
 export default {
-    name: 'Home',
+    name: 'Steps',
     data() {
         return {
             currentComponent: '',
