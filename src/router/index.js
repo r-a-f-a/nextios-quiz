@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Start from '../views/start'
+import Vue from "vue"
+import VueRouter from "vue-router"
+import Start from "@/views/start"
+import Validate from "@/views/validate"
 import Steps from "@/views/steps"
-import Words from '@/views/steps/words'
 import Finish from "@/views/finish"
+import Words from "@/views/steps/words"
 
 Vue.use(VueRouter)
 
@@ -11,6 +12,11 @@ const routes = [{
         path: "/",
         name: "Start",
         component: Start,
+    },
+    {
+        path: "/validate",
+        name: "Validate",
+        component: Validate
     },
     {
         path: "/questions",
@@ -30,7 +36,7 @@ const routes = [{
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: "history",
     base: process.env.BASE_URL,
     routes
 })
