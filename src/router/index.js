@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Start from '../views/start'
 import Steps from "@/views/steps"
+import Words from '@/views/steps/words'
 import Finish from "@/views/finish"
 
 Vue.use(VueRouter)
@@ -15,6 +16,11 @@ const routes = [{
         path: "/questions",
         name: "Steps",
         component: Steps,
+    },
+    {
+        path: "/questions/words",
+        name: "Words",
+        component: Words,
     },
     {
         path: "/finish",
