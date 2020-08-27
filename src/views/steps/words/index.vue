@@ -1,9 +1,9 @@
 <template>
     <div class="puzzle-content">
         <div class="puzzle-grid">
-        <template v-for="(row) in puzzle">
-            <div class="puzzle-letter" v-for="(letter, k) in row" :key="k">{{letter}}</div>
-        </template>
+            <template v-for="(row) in puzzle">
+                <div class="puzzle-letter" v-for="(letter, k) in row" :key="k">{{letter}}</div>
+            </template>
         </div>
     </div>
 </template>
