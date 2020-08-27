@@ -1,11 +1,11 @@
 <template>
-  <div class="puzzle-container">
-      <div class="puzzle-row" v-for="(row, i) in puzzle" :key="i">
-          <div class="puzzle-item">
-              <span class="puzzle-letter" v-for="(letter, k) in row" :key="k">{{letter}}</span>
-          </div>
-      </div>
-  </div>
+    <div class="puzzle-content">
+        <div class="puzzle-grid">
+        <template v-for="(row) in puzzle">
+            <div class="puzzle-letter" v-for="(letter, k) in row" :key="k">{{letter}}</div>
+        </template>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -15,8 +15,8 @@ export default {
         return {
             puzzle: [],
             letters: 'abcdefghijklmnoprstuvwy',
-            options: { height: 30, width: 30, orientations: ['horizontal', 'vertical']},
-            words: ['LOCAWEB', 'TESTE', 'LOCAL', "TERRA", "SERVIDOR", "CLOUD", "NARUTO", "VALORANT"],
+            options: { height: 20, width: 20, orientations: ['horizontal', 'vertical']},
+            words: ['FINANÇAS', 'MANUFATURA', 'GOVERNO', "EDUCAÇÂO", "GÁS", "ÓLEO", "AUTOMOTIVA"],
             config: { x: 0, y: 0, orientation: null, word: '' }
         }
     },
@@ -25,7 +25,6 @@ export default {
     },
     methods: {
         initPuzzle() {
-            // this.config = { x: 0, y: 0, orientation: null, word: '' }
             this.config.x = 0
             this.config.y = 0
             this.config.orientation = null
@@ -55,17 +54,12 @@ export default {
         },
         findLocation(word) {
             
-            // console.log('TRY TO FIND', word)
-
             let size = word.length
 
 
             this.config.x = Math.floor(Math.random() * this.puzzle.length)
             this.config.y = Math.floor(Math.random() * this.puzzle.length)
             this.config.orientation = this.options.orientations[Math.floor(Math.random() * this.options.orientations.length)]
-
-            // console.log('CONFIGS', {x: this.config.x , y: this.config.y, o: this.config.orientation , word})
-        
             
             if (this.config.x + size > this.puzzle.length || this.config.y + size > this.puzzle.length) {
                 this.findLocation(word)
@@ -117,25 +111,31 @@ export default {
 </script>
 
 <style scopped>
-.puzzle-item{
-    margin: auto;
-    width: auto;
-    height: auto;
-    display: grid;
-    grid-template: repeat(30,1%)/repeat(30, 20px);
+.puzzle-content{
     position: relative;
-    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    min-width: 0;
+}
+.puzzle-grid{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    position: relative;
+    grid-template-columns: repeat(20, auto);
+    grid-template-rows: repeat(20, auto);
+    grid-auto-flow: column;
     user-select: none;
 }
-.puzzle-letter{
-    text-transform: uppercase;
-    height: 20px;
-    width: 20px;
+.puzzle-letter {
+    color: #fff;
+    width: 25px;
+    height: 25px;
     line-height: 20px;
-    cursor: pointer;
     text-align: center;
-    background-color: cyan;
+    cursor: pointer;
     border: 1px solid #c9c9c9;
-    user-select: none;
+    background-color: darkgray;
+    text-transform: uppercase;
 }
 </style>
