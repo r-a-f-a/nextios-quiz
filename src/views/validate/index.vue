@@ -1,8 +1,8 @@
 <template>
   <div>
-      <h1>Validate page </h1>
-      <input type="text" placeholder="Token" v-model="token" required>
-      <button @click="validateToken">Validar</button>
+    <h1>Validate page </h1>
+    <input type="text" placeholder="Token" v-model="token" required>
+    <button @click="validateToken">Validar</button>
   </div>
 </template>
 

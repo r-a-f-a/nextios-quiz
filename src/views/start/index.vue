@@ -16,10 +16,12 @@ export default {
   },
   methods: {
     checkEmail() {
-       let validated = this.email.endsWith('@locaweb.com.br')
+      let validated = this.email.endsWith('@locaweb.com.br')
        if (validated) {
-        // consome api para enviar email
-        console.log("EMAIL ENVIADO COM SUCESSO")
+         this.$api.call("post", "/users", {email: this.email})
+         .then( (response) => {
+           console.log("REPONSE", response)
+         })
       }else {
         // apresenta erro para o cliente
         console.log("UTILIZE O EMAIL CORPORATIVO DA LOCAWEB PARA PROSSEGUIR")
