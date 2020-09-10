@@ -2,7 +2,18 @@
     <div class="puzzle-content">
         <div class="puzzle-grid">
             <template v-for="(row, i) in puzzle">
-                <div class="puzzle-letter" v-for="(letter, k) in row" :key="i+k">{{letter}}</div>
+                <div 
+                    class="puzzle-letter" 
+                    v-for="(letter, k) in row"
+                    :key="i+k" 
+                    :data-x="i"
+                    :data-y="k"
+                    @mousedown="captureOn(i, k)" 
+                    @mouseup="captureOff()" 
+                    @mousemove="choose(i, k)"
+                >
+                    {{letter}}
+                </div>
             </template>
         </div>
     </div>
@@ -13,8 +24,11 @@ export default {
     name: 'Words',
     data() {
         return {
+            wordTeste: '',
             puzzle: [],
-            letters: 'abcdefghijklmnoprstuvwy',
+            active: '',
+            captureToggle: false,
+            letters: 'aábcçdeéfghijklmnoóprstuúvwy',
             options: { height: 20, width: 20, orientations: ['horizontal', 'vertical']},
             words: ['FINANÇAS', 'MANUFATURA', 'GOVERNO', "EDUCAÇÂO", "GÁS", "ÓLEO", "AUTOMOTIVA"],
             config: { x: 0, y: 0, orientation: null, word: '' }
@@ -36,7 +50,7 @@ export default {
                 }
             }
             this.fillPuzzle()
-            this.fillRandom()
+            // this.fillRandom()
         },
         fillPuzzle() {
             for (let index = 0; index < this.words.length; index++) {
@@ -55,7 +69,6 @@ export default {
         findLocation(word) {
             
             let size = word.length
-
 
             this.config.x = Math.floor(Math.random() * this.puzzle.length)
             this.config.y = Math.floor(Math.random() * this.puzzle.length)
@@ -105,6 +118,17 @@ export default {
         },
         randonLetter(){
             return this.letters[Math.floor(Math.random() * this.letters.length)]
+        },
+        captureOn(i, k) {
+            this.captureToggle = true
+            console.log(i, k)
+        },
+        captureOff() {
+            this.captureToggle = false
+        },
+        choose(i, k) {
+            let letter = this.puzzle[i][k]
+            console.log('letter', letter)
         }
     }
 }
@@ -131,11 +155,14 @@ export default {
     color: #fff;
     width: 25px;
     height: 25px;
-    line-height: 20px;
+    line-height: 25px;
     text-align: center;
     cursor: pointer;
     border: 1px solid #c9c9c9;
     background-color: darkgray;
     text-transform: uppercase;
+}
+.active{
+    background-color: deeppink !important;
 }
 </style>
