@@ -1,30 +1,48 @@
 <template>
-    <div>
-      <h1>Initial page </h1>
-      <input type="email" placeholder="Email aqui" v-model="email" required>
-      <button @click="checkEmail">INVITE</button>
+  <div class="flex-container">
+    <div class="start-form">
+      <h2 class="start-form__title">Informe o seu e-mail corporativo</h2>
+      <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="nome.sobrenome@locaweb.com.br"
+          v-model="email"
+          required
+        >
+      </div>
+      <button
+        class="btn btn-primary"
+        @click="checkEmail"
+      >Cadastrar</button>
+      <template v-if="error">
+        <div class="error-box">
+          <small class="error-msg">* Utilize o e-mail corporativo da Locaweb para prosseguir</small>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Start',
-  data() {
+  data () {
     return {
-      email: ""
+      email: "",
+      error: false
     }
   },
   methods: {
-    checkEmail() {
+    checkEmail () {
       let validated = this.email.endsWith('@locaweb.com.br')
-       if (validated) {
-         this.$api.call("post", "/users", {email: this.email})
-         .then( (response) => {
-           console.log("REPONSE", response)
-         })
-      }else {
-        // apresenta erro para o cliente
-        console.log("UTILIZE O EMAIL CORPORATIVO DA LOCAWEB PARA PROSSEGUIR")
+      if (validated) {
+        this.$api.call("post", "/users", { email: this.email })
+          .then((response) => {
+            console.log("REPONSE", response)
+          })
+      } else {
+        this.error = true
       }
     }
   }
@@ -32,5 +50,4 @@ export default {
 </script>
 
 <style>
-
 </style>

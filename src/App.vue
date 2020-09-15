@@ -1,16 +1,16 @@
 <template>
-  <div id="app" class="flex-container">
-    <transition name="fade" mode="out-in">
-      <router-view></router-view>
-    </transition>
+  <div id="app">
+    <router-view></router-view>
   </div>
 </template>
 
 <style lang="scss">
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
