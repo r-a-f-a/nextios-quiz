@@ -13,6 +13,29 @@ api.init()
 Vue.use(events)
 
 new Vue({
+    data () {
+        return {
+            user: null,
+            verification: false
+        }
+    },
+    created(){
+        if (this.$route.query.newSession){
+            localStorage.removeItem('_user')
+            this.user = null
+            this.$router.push('/')
+        }
+        if (localStorage.getItem('_user')) {
+            let _user = localStorage.getItem('_user')
+            let _verification = localStorage.getItem('_verification')
+            this.user = jwt(_user, process.env.VUE_APP_SECRET).verify()
+            this.verification = jwt(_verification, process.env.VUE_APP_SECRET).verify()
+            if (this.user.id && !this.verification && this.$route.name != 'Validate') {
+               let code = this.$route.query.code ? `?code=${this.$route.query.code}` : ''
+               this.$router.push(`/validate${code}`)
+            }
+        }
+    },
     router,
     store,
     events,

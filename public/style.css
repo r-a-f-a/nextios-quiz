@@ -6,10 +6,7 @@
 body, html {
     width: 100%;
     height: 100%;
-    font-family: 'Poppins', sans-serif;
-    /* background-color: aliceblue; */
-    background-image: url("./img/bg.jpg");
-    height: 100%;
+    font-family: 'Ubuntu',arial,sans-serif !important;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -28,7 +25,7 @@ li {
     text-align: -webkit-match-parent;
 }
 .initial-bg {
-    background-image: url("~@/public/img/bg.jpg");
+    background-image: url("~@/public/img/home_background.png");
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -42,10 +39,13 @@ li {
     justify-content: center;
 }
 .start-form{
-    width: 30% !important;
-    background-color: #1E3444;
+    background-color: rgba(30, 52, 68, 0.8);
     padding: 70px 50px 70px 50px;
     border: 3px solid #11222e;
+    position: absolute;
+    top: 30%;
+    left: 100px;
+    min-width: 300px !important;
 }
 .card{
     position: relative;
@@ -165,7 +165,7 @@ input[type=number]::-webkit-outer-spin-button {
 .start-form__title{
     color: #fff;
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 25px;
 }
 .error-box{
     margin-top: 20px;
