@@ -16,7 +16,7 @@ export default {
   },
   computed:{
     image() {
-      let backgroundSelected = this.$route.meta.background || 'question'
+      let backgroundSelected = this.$route.meta.background || 'home'
       let background = this.background[backgroundSelected]
       return require(`../public/img/${background}`)
     }

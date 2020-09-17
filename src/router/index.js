@@ -22,9 +22,9 @@ const routes = [{
     path: "/validate",
     name: "Validate",
     component: Validate,
-        meta: {
-            'background': 'home'
-        }
+    meta: {
+        'background': 'home'
+    }
 },
 {
     path: "/questions",

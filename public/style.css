@@ -212,3 +212,23 @@ input[type=number]::-webkit-outer-spin-button {
 .question{
     align-items: flex-end;
 }
+
+#appIllustrations {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    border: 1px solid black;
+
+}
+
+#appIllustrations .line-1 {
+      fill: #c3c3c3;
+      stroke-linecap: round;
+      stroke-width: 30px;
+      stroke-opacity: 0.9;
+      stroke: #4fe4ab;
+}

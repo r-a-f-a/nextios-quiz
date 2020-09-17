@@ -10,7 +10,8 @@
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?</p>
     </div>
     <div id="question-body">
-
+      <!-- <wordSwipe></wordSwipe> -->
+      <drag></drag>
     </div>
   </div>
 </div>
@@ -18,8 +19,14 @@
 </template>
 
 <script>
+// import wordSwipe from '../wordswipe'
+import drag from '../drag'
 export default {
   name: "question",
+  components: { 
+    // wordSwipe
+    drag
+  },
   data() {
     return {
       number: '1'
