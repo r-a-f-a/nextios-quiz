@@ -45,8 +45,8 @@ export default {
   /* background-image: url('../../../public/img/question.jpg') !important; */
 }
 #question{
-  vertical-align: top;
-    border: 1px solid black;
+    vertical-align: top;
+    /* border: 1px solid black; */
     position: relative;
     width: 60%;
     top: 20%;

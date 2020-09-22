@@ -6,7 +6,9 @@
 
   <div class='list_2'>
     <div class="myBox container"  v-for="year in years"  :key="year">
-      <div class="boxItem">{{year}}</div>
+      <div class="boxItem">
+        <span class='year'>{{year}}</span>
+      </div>
       <div class="boxItem dropzone" data-type="answer" data-dropzone="1"></div>
       
     </div>
@@ -92,6 +94,14 @@ export default {
 </script>
 
 <style>
+.boxItem .year{
+  color: #4fe4ab;
+    font-size: 40px;
+    font-weight: bold;
+    padding: 35px;
+    display: block;
+    text-shadow: 2px 2px #1e3344;
+}
 .list_1{
   float:left;
   width: 300px;
@@ -123,12 +133,18 @@ export default {
     background-color: #1e3344;
     height: 125px;
     width: 250px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently */
 }
 .box-question span{
     line-height: 20px;
     padding: 8px;
     text-align: center;
-    top: 40px;
+    top: 30%;
     left: -25px;
     position: absolute;
     border: 2px solid #1e3344;
@@ -141,7 +157,10 @@ export default {
 }
 
 .box-question p{
-display: block;
+    display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
     font-size: 13px;
     margin-left: 15px;
     padding: 15px;
@@ -158,7 +177,7 @@ display: block;
 
 div.boxItem { 
     display: block;
-    border: 1px solid black;
+    border: 2px solid #1e3344 ;
     margin-right: 5em;
     position: relative;
     margin-bottom: 10px;
@@ -167,7 +186,7 @@ div.boxItem {
     float: left;
 }
 div.boxItem.dropzone{ 
-  border: 1px dashed black !important;
+  border: 2px dashed #1e3344 !important;
 }
 
 div.boxItem:first-child {
@@ -180,7 +199,7 @@ div.boxItem:first-child {
 {
   content:'';
   width:50px;
-  border-bottom:2px solid;
+  border-bottom:2px solid #1e3344;
   position:absolute;
   top:50%;
 
