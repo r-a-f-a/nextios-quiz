@@ -1,6 +1,7 @@
 <template>
   <div id="app"  :style="{ backgroundImage: 'url(' + image + ')' }">
     <router-view></router-view>
+    <notifications group="foo" position="bottom right" />
   </div>
 </template>
 <script>

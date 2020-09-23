@@ -7,14 +7,14 @@
   </div>
   <div class='right'>
     <div id="question-title">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?</p>
+      <p>{{ questions[selectedQuestion].title}}</p>
     </div>
     <div id="question-body">
       <!-- <wordSwipe></wordSwipe> -->
       <!-- <drag></drag> -->
       <component :is="questions[selectedQuestion].component"></component>
-      <prev></prev>
-      <next></next>
+      <button @click="prev()" class="btn">Voltar</button>
+      <button @click="next()" class="btn">Avançar</button>
     </div>
   </div>
 </div>
@@ -31,30 +31,48 @@ export default {
     wordSwipe
     // drag
   },
+  methods: {
+    prev(){
+      if(this.selectedQuestion > 1){
+        this.selectedQuestion = this.selectedQuestion - 1
+        this.number =  this.selectedQuestion
+      }
+    },
+    next() {
+      this.$events.emit('VALIDATE_QUESTION')
+    }
+  },
   mounted() {
-    
-    // FLUXO 
-    //  COMPONENT  > EVT VALIDATE (ENV NEXT - COMP. PAI) > EVT ANSWER (COMP. PAI)
-
-    this.$off('ANSWER_QUESTION')
-    this.$on('ANSWER_QUESTION', (answer) => {
-      console.log(answer)
+    this.$events.off('TIP_QUESTION')
+    this.$events.on('TIP_QUESTION', (tip) => {
+      this.$notify({
+        group: 'foo',
+        type: tip.type,
+        title: tip.title,
+        text: tip.text
+      });
+    })
+    this.$events.off('ANSWER_QUESTION')
+    this.$events.on('ANSWER_QUESTION', (answer) => {
       // CHAMA API MICHEL COM A RESPOSTA RECEBIDA
-      // PAYLOAD = ANWSER +  SELECTED_QUESTION {}
-      // NEXT
+      console.log(answer)
+      if(this.selectedQuestion != Object.keys(this.questions).length){
+        this.selectedQuestion = this.selectedQuestion + 1
+        this.number =  this.selectedQuestion
+      }
     })
   },
   data() {
     return {
-      number: '2',
+      number: '1',
       selectedQuestion: 1,
       questions: {
         1: {
-          title: "",
+          title: "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
           component: drag
         },
         2: {
-          title: "",
+          title: "Em quais segmentos a Nextios atuará?",
           component: wordSwipe
         }
       }
@@ -69,9 +87,6 @@ export default {
 </script>
 
 <style>
-#app {
-  /* background-image: url('../../../public/img/question.jpg') !important; */
-}
 #question{
     vertical-align: top;
     /* border: 1px solid black; */
@@ -113,7 +128,7 @@ export default {
 #question-title p{
   margin: 30px;
   margin-left: 7%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: absolute;
   font-size: 25px;
   font-weight: bold;
@@ -130,5 +145,7 @@ export default {
   height: 72%;
 }
 
+</style>
+<style scoped>
 
 </style>

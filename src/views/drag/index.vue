@@ -24,12 +24,11 @@
 import { Droppable } from '@shopify/draggable'
 export default {
  name: "drag",
- mounted () {
-
-   this.$on('NEXT_QUESTION', () => {
-     this.validate()
-   })
-
+ mounted() {
+   this.$events.off('VALIDATE_QUESTION')
+  this.$events.on('VALIDATE_QUESTION', () => {
+    this.validate()
+  })
    let _this = this
    this.$off('DRAG_ANSWER')
    this.$on('DRAG_ANSWER', (payload) => {
@@ -70,14 +69,21 @@ export default {
  },
  methods: {
    validate(){
-     if(this.answer.length === 5){
-       this.$emit('ANSWER_QUESTION', this.answer)
+     if(Object.keys(this.answer).length === 5){
+      this.$events.emit('ANSWER_QUESTION', this.answer) 
+     } else {
+      this.$events.emit('TIP_QUESTION', this.tip)
      }
    }
  },
  data() {
    return {
       droppableOrigin: '',
+      tip: {
+        type: "error",
+        title: "Ops!",
+        text: "Preencha todos os campos para continuar."
+      },
       questions: {
         'A' :  "Nasce a Locaweb IDC, uma divisão de negócios da Locaweb, com soluções mais robustas de internet e Data Center.",
         'B' :  "Locaweb IDC inicia uma jornada de reestruturação para atender o mercado corporativo e se torna Locaweb Soluções Corporativas",
