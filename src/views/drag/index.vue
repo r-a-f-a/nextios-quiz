@@ -1,48 +1,22 @@
 <template>
-  <div class="">
-
-
-    
-
-  <div class='list_2'>
+  <div class="drag">
+  <div class='timeline'>
     <div class="myBox container"  v-for="year in years"  :key="year">
       <div class="boxItem">
         <span class='year'>{{year}}</span>
       </div>
-      <div class="boxItem dropzone" data-type="answer" data-dropzone="1"></div>
+      <div class="boxItem dropzone" data-type="answer" :data-year="year"></div>
       
     </div>
   </div>
-      <div class="container list_1">
-        <div class="dropzone" v-for="(item,index) in list_1" :key='`list_1_${index}`' :data-dropzone="index">
-        <div class='box-question item' :class='`answer-${index}`'>
+      <div class="container timeline-answer">
+        <div class="dropzone" v-for="(item,index) in questions" :key='`list_1_${index}`'>
+        <div class='box-question item' :class='`answer-${index}`'  :data-answer="index">
             <span>{{index}}</span>
             <p>{{item}}</p>
         </div>
         </div>
     </div>
-
-
-
-
-    <!-- <div class="container">
-      <div class="dropzone draggable-dropzone--occupied"><div class="item">A</div></div>
-      <div class="dropzone draggable-dropzone--occupied"><div class="item">B</div></div>
-      <div class="dropzone draggable-dropzone--occupied"><div class="item">C</div></div>
-    </div>
-
-    <div class="container">
-      <div class="dropzone"></div>
-      <div class="dropzone"></div>
-      <div class="dropzone"></div>
-    </div>
-
-    <div class="container">
-        <div class="dropzone"></div>
-        <div class="dropzone"></div>
-        <div class="dropzone"></div>
-    </div> -->
-
   </div>
 </template>
 
@@ -52,6 +26,26 @@ export default {
  name: "drag",
  mounted () {
 
+   this.$on('NEXT_QUESTION', () => {
+     this.validate()
+   })
+
+   let _this = this
+   this.$off('DRAG_ANSWER')
+   this.$on('DRAG_ANSWER', (payload) => {
+     console.log('RESET SELECTED WORD', payload.answer)
+     Object.keys(_this.answer).find((key) => {  
+       if(_this.answer[key] ===  payload.answer){
+         _this.$delete(_this.answer, key)
+       }
+      })
+      console.log('HAVE YEAR', _this.years.indexOf(payload.year))
+      if(_this.years.indexOf(payload.year) >= 0){
+        this.answer[payload.year] = payload.answer
+        console.log('THIS', this.answer)
+      }
+   })
+
   const droppable = new Droppable(document.querySelectorAll('.container'), {
     draggable: '.item',
     dropzone: '.dropzone',
@@ -59,27 +53,32 @@ export default {
       constrainDimensions: true,
     }
   });
-  let _this = this
+  
 
-  // --- Draggable events --- //
-  droppable.on('drag:start', (evt) => {
-    _this.droppableOrigin = evt.originalSource.parentNode.dataset.dropzone;
-  });
+  // droppable.on('drag:start', (evt) => {
+  //   _this.droppableOrigin = evt
+  // });
 
-  droppable.on('droppable:dropped', (evt) => {
+  droppable.on('droppable:stop', (evt) => {
     console.log('EVT', evt)
-    console.log('evt.dropzone', evt.dropzone.dataset.type)
-    // if (_this.droppableOrigin !== evt.dropzone.dataset.dropzone) {
-    //   evt.cancel();
-    // }
+    let year = evt.dropzone.dataset.year
+    let answer = evt.dragEvent.source.dataset.answer
+    _this.$emit('DRAG_ANSWER', {year, answer})
   });
-  // droppable.on('droppable:dropped', (e) => console.log('droppable:dropped', e));
+  // droppable.on('droppable:stop', (e) => console.log('droppable:stop', e));
   // droppable.on('droppable:returned', (e) => console.log('droppable:returned', e));
+ },
+ methods: {
+   validate(){
+     if(this.answer.length === 5){
+       this.$emit('ANSWER_QUESTION', this.answer)
+     }
+   }
  },
  data() {
    return {
       droppableOrigin: '',
-      list_1: {
+      questions: {
         'A' :  "Nasce a Locaweb IDC, uma divisão de negócios da Locaweb, com soluções mais robustas de internet e Data Center.",
         'B' :  "Locaweb IDC inicia uma jornada de reestruturação para atender o mercado corporativo e se torna Locaweb Soluções Corporativas",
         'C' :  "Locaweb Soluções Corporativas passa por um rebranding de marca e muda seu nome para Locaweb Corp",
@@ -87,43 +86,52 @@ export default {
         'E' : "Locaweb Corp Cluster2GO inicia uma jornada de evolução, rumo a um futuro tecnológico, eficiente e sustentável e torna-se a Nextios, que vai muito além de serviços de infraestrutura, datacenter e cloud."
       },
       years: ['2003','2014','2017','2018','2020'],
-      answer:{}
+      answer: {}
    }
  }
 }
 </script>
 
-<style>
+<style scoped>
+.drag{
+  display: flex;
+  justify-content: flex-end;
+}
 .boxItem .year{
-  color: #4fe4ab;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently */
+    color: #4fe4ab;
+    text-align: center;
     font-size: 40px;
     font-weight: bold;
     padding: 35px;
     display: block;
     text-shadow: 2px 2px #1e3344;
 }
-.list_1{
+.timeline-answer{
   float:left;
   width: 300px;
   height: 500px;
 }
-.list_1 .dropzone{
-    /* border-bottom: 1px dashed #ccc; */
+.timeline-answer .dropzone{
     height: auto;
     min-height: 100px;
 }
-.list_1 .dropzone:last-child{
+.timeline-answer .dropzone:last-child{
   border-bottom:0px !important;
 }
-.list_2{
+.timeline{
   float:left;
 }
-.list_1 .box-question{
+.timeline-answer .box-question{
   float:left;
-  margin: 10px;
-  height: auto;
+  margin-bottom: 10px;
 }
-.list_1 .box-question.answer-C{
+.timeline-answer .box-question.answer-C{
   clear:both !important;
 }
 
@@ -187,6 +195,7 @@ div.boxItem {
 }
 div.boxItem.dropzone{ 
   border: 2px dashed #1e3344 !important;
+  margin-right: 40px;
 }
 
 div.boxItem:first-child {
@@ -214,8 +223,5 @@ div.boxItem:first-child {
 .boxItem:last-of-type:after {
   display:none;
 }
-body {
-  text-align:center;
-}
-  /* .draggable-dropzone--occupied { background: lightgreen; } */
+
 </style>

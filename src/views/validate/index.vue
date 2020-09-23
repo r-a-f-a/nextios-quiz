@@ -4,8 +4,8 @@
     <span class="tip">O código foi enviado para o email: <b>{{email}}</b></span>
     <div class="form-group">
       <input
-        type="email"
-        class="form-control"
+        type="text"
+        class="form-control code"
         placeholder="Ex: 4VV7XT"
         v-model="code"
         required
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     validateCode () {
-       return this.$api.call("get", "/users/verification/validate", { userId: this.$root.$data.user.id, code: this.code })
+       return this.$api.call("get", "/users/verification/validate", { userId: this.$root.$data.user.id, code: this.code.toUpperCase() })
       .then((response) => {
         console.log('RESPONSE')
         if(response.data.code === 200){
@@ -69,6 +69,9 @@ export default {
 </script>
 
 <style>
+.code {
+  text-transform: uppercase;
+}
 span.tip {
   font-size: 12px;
     text-align: center;

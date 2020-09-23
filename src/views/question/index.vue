@@ -11,7 +11,10 @@
     </div>
     <div id="question-body">
       <!-- <wordSwipe></wordSwipe> -->
-      <drag></drag>
+      <!-- <drag></drag> -->
+      <component :is="questions[selectedQuestion].component"></component>
+      <prev></prev>
+      <next></next>
     </div>
   </div>
 </div>
@@ -19,17 +22,42 @@
 </template>
 
 <script>
-// import wordSwipe from '../wordswipe'
+import wordSwipe from '../wordswipe'
 import drag from '../drag'
+
 export default {
   name: "question",
   components: { 
-    // wordSwipe
-    drag
+    wordSwipe
+    // drag
+  },
+  mounted() {
+    
+    // FLUXO 
+    //  COMPONENT  > EVT VALIDATE (ENV NEXT - COMP. PAI) > EVT ANSWER (COMP. PAI)
+
+    this.$off('ANSWER_QUESTION')
+    this.$on('ANSWER_QUESTION', (answer) => {
+      console.log(answer)
+      // CHAMA API MICHEL COM A RESPOSTA RECEBIDA
+      // PAYLOAD = ANWSER +  SELECTED_QUESTION {}
+      // NEXT
+    })
   },
   data() {
     return {
-      number: '1'
+      number: '2',
+      selectedQuestion: 1,
+      questions: {
+        1: {
+          title: "",
+          component: drag
+        },
+        2: {
+          title: "",
+          component: wordSwipe
+        }
+      }
     }
   },
   computed: {
