@@ -99,10 +99,7 @@ export default {
 </script>
 
 <style scoped>
-.drag{
-  display: flex;
-  justify-content: flex-end;
-}
+
 .boxItem .year{
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -114,18 +111,16 @@ export default {
     text-align: center;
     font-size: 40px;
     font-weight: bold;
-    padding: 35px;
+    padding: 10px;
     display: block;
     text-shadow: 2px 2px #1e3344;
 }
 .timeline-answer{
   float:left;
-  width: 300px;
-  height: 500px;
+  width: 220px;
 }
 .timeline-answer .dropzone{
-    height: auto;
-    min-height: 100px;
+  height: auto;
 }
 .timeline-answer .dropzone:last-child{
   border-bottom:0px !important;
@@ -145,8 +140,8 @@ export default {
   position: relative;
     display: block;
     background-color: #1e3344;
-    height: 125px;
-    width: 250px;
+    height: 90px;
+    width: 220px;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -khtml-user-select: none; /* Konqueror HTML */
@@ -172,12 +167,11 @@ export default {
 
 .box-question p{
     display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
     font-size: 13px;
-    margin-left: 15px;
-    padding: 15px;
+    padding: 11px;
     color: white;
     text-align: center;
     line-height: 15px;
@@ -195,8 +189,8 @@ div.boxItem {
     margin-right: 5em;
     position: relative;
     margin-bottom: 10px;
-    height: 125px;
-    width: 250px;
+    height: 90px;
+    width: 220px;
     float: left;
 }
 div.boxItem.dropzone{ 

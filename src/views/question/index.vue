@@ -13,8 +13,10 @@
       <!-- <wordSwipe></wordSwipe> -->
       <!-- <drag></drag> -->
       <component :is="questions[selectedQuestion].component"></component>
-      <button @click="prev()" class="btn">Voltar</button>
-      <button @click="next()" class="btn">Avançar</button>
+      <!-- <button @click="prev()" class="btn">Voltar</button> -->
+      <div class="footer">
+        <button @click="next()" class="btn">Avançar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -32,12 +34,12 @@ export default {
     // drag
   },
   methods: {
-    prev(){
-      if(this.selectedQuestion > 1){
-        this.selectedQuestion = this.selectedQuestion - 1
-        this.number =  this.selectedQuestion
-      }
-    },
+    // prev(){
+    //   if(this.selectedQuestion > 1){
+    //     this.selectedQuestion = this.selectedQuestion - 1
+    //     this.number =  this.selectedQuestion
+    //   }
+    // },
     next() {
       this.$events.emit('VALIDATE_QUESTION')
     }
@@ -87,6 +89,11 @@ export default {
 </script>
 
 <style>
+.btn{
+  background-color: #1e3344;
+  color: #fff;
+}
+
 #question{
     vertical-align: top;
     /* border: 1px solid black; */
@@ -98,6 +105,14 @@ export default {
 #question img{
   width:100%;
   height:100%;
+}
+
+.footer{
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-right: 15%;
 }
 
 .left{
@@ -139,9 +154,11 @@ export default {
 
 
 #question-body{
-  border:1px solid black;
-  width: calc(100% - 40px);
-  margin:20px 0px;
+  /* border:1px solid black; */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin:10px 0px;
   height: 72%;
 }
 
