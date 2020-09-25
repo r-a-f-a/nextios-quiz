@@ -25,9 +25,9 @@ export default {
     mounted: function () {
         //
         let _this = this;
-        var space = 17
+        var space = 14
+        var ySpace = 15
         var paper = window.Snap(this.$refs.appIllustrations);
-        console.log('PAPER', paper)
         let p1, p2, lp1, lp2, cp2, line;
         window.$(".app-grid").on("mousedown", ".grid-letter", function () {
             window.$( "#appIllustrations .line-1" ).not( ".selected" ).remove();
@@ -35,7 +35,7 @@ export default {
             let idx = window.$(this).index(".grid-letter")
             p1 = window.$(this).position();
             lp1 = {
-                y: Math.floor(idx / 15),
+                y: Math.floor(idx / ySpace),
                 x: ((idx % 15))
             }
             line = paper.line(p1.left + space, p1.top + space, p1.left + space, p1.top + space);
@@ -48,7 +48,7 @@ export default {
                 p2 = window.$(this).position();
                 let idx = window.$(this).index(".grid-letter")
                 cp2 = {
-                    y: Math.floor(idx / 15),
+                    y: Math.floor(idx / ySpace),
                     x: ((idx % 15))
                 }
                 if (Utility.isValidMove(Utility.Math.getAngle(lp1.x, lp1.y, cp2.x, cp2.y))) {
@@ -66,7 +66,7 @@ export default {
             mouseDown = false;
             let idx = window.$(this).index(".grid-letter");
             lp2 = {
-                y: Math.floor(idx / 15),
+                y: Math.floor(idx / ySpace),
                 x: ((idx % 15))
             }
             let selWord = _this.getSelectedWord(Utility.lettersBetween(lp1.x, lp1.y, lp2.x, lp2.y));
@@ -145,27 +145,22 @@ $fb-bg: #f1f1f1;
     padding: 5px;
     position: relative;
     .grid-letter {
-        position: relative;
         list-style-type: none;
-        transition: 0.3s ease all;
+        transition: all .3s ease;
         display: inline-block;
-        font-size: 15px;
-        user-select: none;
-        width: calc(6.6% - 2px);
-        height: calc(6.6% - 2px);
-        text-align: center;
-        box-sizing: border-box;
-        padding: 10px 10px;
-        color: #fff;
+        font-size: 12px;
         font-weight: bold;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        width: 6.6%;
+        text-align: center;
+        padding: 5px 10px;
+        color: #1e3344;
         text-transform: uppercase;
-        // text-shadow: 1px 1px 2px rgba(150, 150, 150, 0.5);
-        text-shadow: 1px 1px 2px #000;
-        border:1px solid #fff;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        margin: 1px;
+        text-shadow: 1px 1px 2px hsla(0,0%,59%,.5);
+        border: 1px solid #1e3344;
         cursor: pointer;
         // &:before {
         //     content: '';
@@ -177,7 +172,8 @@ $fb-bg: #f1f1f1;
         // }
         &:hover {
             // opacity: 0.6;
-            background: #4fe4ab;
+            color: #fff;
+            background: #1e3344;
         }
     }
 }
@@ -190,16 +186,7 @@ $fb-bg: #f1f1f1;
     height: 100%;
     width: 100%;
     pointer-events: none;
-    border:1px solid black;
+    // border:1px solid black;
    
 }
-
-#appIllustrations .line-1 {
-        stroke-linecap: round;
-        stroke-width: 15;
-        stroke-opacity: 0.5;
-        stroke: #C3F1FE;
-    }
-
-
 </style>

@@ -10,8 +10,6 @@
       <p>{{ questions[selectedQuestion].title}}</p>
     </div>
     <div id="question-body">
-      <!-- <wordSwipe></wordSwipe> -->
-      <!-- <drag></drag> -->
       <component :is="questions[selectedQuestion].component"></component>
       <!-- <button @click="prev()" class="btn">Voltar</button> -->
       <div class="footer">
@@ -70,12 +68,12 @@ export default {
       selectedQuestion: 1,
       questions: {
         1: {
-          title: "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
-          component: drag
-        },
-        2: {
           title: "Em quais segmentos a Nextios atuará?",
           component: wordSwipe
+        },
+        2: {
+          title: "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
+          component: drag
         }
       }
     }

@@ -1,20 +1,14 @@
 <template>
   <div class='app-screen'>
-    <section class="app-title">{{selword}}</section>
     <players ref="appPlayers"> </players>
     <score ref="appScore"> </score>
-    <grid ref="appGrid" v-on:word-match="onWordMatch"
-                        v-on:word-select="onWordSelect">
+    <grid ref="appGrid" v-on:word-match="onWordMatch">
     </grid>
-    <ul class="app-words list">
+    <ul class="app-words">
       <li v-for="(word, idx) in words" :key="idx" class="grid-word" :class="{'word-done': word.done}">
         {{word.word}}
       </li>
     </ul>
-    <section class="btn-list">
-      <button class="ghost-btn " v-on:click="onNewGame"> New </button>
-      <button class="ghost-btn " v-on:click="onPassClick"> Pass </button>
-    </section>
   </div>
 </template>
 
@@ -26,7 +20,6 @@ let scoreController = null;
 
 let wordBase = []; // Dictionary
 let wordsFound = 0; // No. of words found from the grid
-let userGaveup = 0; // No. of users gave up subsequently
 let totalWords = 2; // No. of wors loaded into the grid
 import grid from './componets/grid'
 import players from './componets/players'
@@ -39,7 +32,11 @@ export default {
     },
     data: function () {
         return {
-            selword: '',
+            tip: {
+                type: "error",
+                title: "Ops!",
+                text: "Encontre todas as palavras para continuar."
+            },
             selPlayer: 1, // Default 2 players game
             gameOn: false,
             gameMsg: '',
@@ -47,15 +44,19 @@ export default {
         }
     },
     mounted: function () {
+        this.$events.off('VALIDATE_QUESTION')
+        this.$events.on('VALIDATE_QUESTION', () => {
+            this.passNextPlayer()
+        })
         // let _this = this;
         console.log(this.$refs)
         gridController = this.$refs.appGrid;
         playerController = this.$refs.appPlayers;
         scoreController = this.$refs.appScore;
         // wordBase = ['FINANÇAS', 'MANUFATURA', 'GOVERNO', "EDUCAÇÂO", "GÁS", "ÓLEO", "AUTOMOTIVA"]
-        wordBase = ['FINANÇAS', 'MANUFATURA', 'GOVERNO', "EDUCAÇÃO", "GÁS", "ÓLEO", "AUTOMOTIVA"]
-        this.initGame()
-        
+        // wordBase = ["GÁS", "ÓLEO"]
+        wordBase = ['FINANÇAS', 'MANUFATURA', 'GOVERNO', 'EDUCAÇÃO', 'GÁS', 'ÓLEO', 'AUTOMOTIVA']
+        this.initGame() 
     },
     methods: {
         initGame: function () {
@@ -66,15 +67,6 @@ export default {
             scoreController.startTimer();
         },
 
-        resetGame: function () {
-            this.gameOn = false;
-            // this.gameMsg = "";
-            userGaveup = 0;
-            wordsFound = 0;
-            gridController.reset();
-            playerController.reset();
-            scoreController.reset();
-        },
         // Suffle the words from dictionary
         prepareWords: function () {
             this.words = [];
@@ -87,17 +79,11 @@ export default {
         },
         passNextPlayer: function () {
             let curPlayer;
-            if (userGaveup >= this.selPlayer) {
-                this.gameMsg = "Game Over";
-                // Router.navigate("finish");
+            if (wordsFound === totalWords) {
+                this.$events.emit('ANSWER_QUESTION', "concluido") 
                 return;
-            }
-            if (wordsFound >= totalWords) {
-                let winner = playerController.getWinner();
-                this.gameMsg = winner.name + " won";
-                console.log('WINNER')
-                // Router.navigate("finish");
-                return;
+            } else {
+               this.$events.emit('TIP_QUESTION', this.tip)
             }
             playerController.nextPlayer();
             curPlayer = playerController.getCurrentPlayer();
@@ -109,28 +95,13 @@ export default {
         onWordMatch: function (idx) {
             let mword = this.words[idx];
             let curPlayer = playerController.getCurrentPlayer();
-            console.log('CUR PLAYER', curPlayer)
             mword.done = true;
             scoreController.setScore(curPlayer.score + mword.word.length * 10);
             curPlayer.score += mword.word.length * 10;
-            userGaveup = 0;
             wordsFound++;
             // setTimeout(() => {
             this.passNextPlayer();
             // }, 1000);
-        },
-
-       onWordSelect: function(selWord) {
-            this.selword = selWord;
-        },
-
-        onNewGame: function () {
-            // Router.navigate("");
-        },
-
-        onPassClick: function () {
-            userGaveup++;
-            this.passNextPlayer();
         },
 
         onPlayerSelect: function (pcount) {
@@ -164,9 +135,6 @@ body {
 .viewport {
     position: relative;
 }
-.list {
-    list-style-type: none;
-}
 .app-screen, .init-screen {
     // min-height: 400px;
     // max-width: 420px;
@@ -183,16 +151,7 @@ body {
     display: inline-block;
     background-color: rgb(255, 255, 255);
 }
- .app-title {
-     text-align: center;
-     height: 15px;
-     width: inherit;
-     font-size: $font-xs + 2;
-     letter-spacing: 2px;
-     text-transform: uppercase;
-     color: #888;
-     position: absolute;
- }
+
  .app-header {
     height: 100px;
     position: relative;
@@ -215,19 +174,21 @@ body {
 }
 
 .app-words {
-    padding: 10px 15px;
+    padding: 6px 15px;
     margin: 0;
     text-align: center;
     li {
         display: inline-block;
+        font-weight: bold;
         min-width: 70px;
         text-align: center;
         font-size: $font-xs + 1;
         margin: 5px 10px;
-        color: $grey-color;
+        color: #4fe4ab;
         text-shadow: 1px 1px 2px rgba(150, 150, 150, 0.5);
         &.word-done {
             opacity: 0.7;
+            color: #1e3344;
             text-decoration: line-through;
         }
 
