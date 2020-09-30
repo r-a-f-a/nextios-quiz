@@ -1,34 +1,37 @@
 <template>
-<div class="question">
-  <div class='left'>
-    <div id="question">
-      <img :src="imageQuestion"/>
+  <div class="question">
+    <div class="left">
+      <div id="question">
+        <img :src="imageQuestion" />
+      </div>
     </div>
-  </div>
-  <div class='right'>
-    <div id="question-title">
-      <p>{{ questions[selectedQuestion].title}}</p>
-    </div>
-    <div id="question-body">
-      <component :is="questions[selectedQuestion].component"></component>
-      <!-- <button @click="prev()" class="btn">Voltar</button> -->
-      <div class="footer">
-        <button @click="next()" class="btn">Avançar</button>
+    <div class="right">
+      <div id="question-title">
+        <p>{{ questions[selectedQuestion].title }}</p>
+      </div>
+      <div id="question-body">
+        <component
+          :is="questions[selectedQuestion].component"
+          :configs="questions[selectedQuestion].configs"
+        ></component>
+        <!-- <button @click="prev()" class="btn">Voltar</button> -->
+        <div class="footer">
+          <button @click="next()" class="btn">Avançar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-  
 </template>
 
 <script>
-import wordSwipe from '../wordswipe'
-import drag from '../drag'
+import wordSwipe from "../wordswipe";
+import drag from "../drag";
+import options from "../options";
 
 export default {
   name: "question",
-  components: { 
-    wordSwipe
+  components: {
+    wordSwipe,
     // drag
   },
   methods: {
@@ -39,73 +42,102 @@ export default {
     //   }
     // },
     next() {
-      this.$events.emit('VALIDATE_QUESTION')
-    }
+      this.$events.emit("VALIDATE_QUESTION");
+    },
   },
   mounted() {
-    this.$events.off('TIP_QUESTION')
-    this.$events.on('TIP_QUESTION', (tip) => {
+    this.$events.off("TIP_QUESTION");
+    this.$events.on("TIP_QUESTION", (tip) => {
       this.$notify({
-        group: 'foo',
+        group: "foo",
         type: tip.type,
         title: tip.title,
-        text: tip.text
+        text: tip.text,
       });
-    })
-    this.$events.off('ANSWER_QUESTION')
-    this.$events.on('ANSWER_QUESTION', (answer) => {
+    });
+    this.$events.off("ANSWER_QUESTION");
+    this.$events.on("ANSWER_QUESTION", (answer) => {
       // CHAMA API MICHEL COM A RESPOSTA RECEBIDA
-      console.log(answer)
-      if(this.selectedQuestion != Object.keys(this.questions).length){
-        this.selectedQuestion = this.selectedQuestion + 1
-        this.number =  this.selectedQuestion
+      console.log(answer);
+      if (this.selectedQuestion != Object.keys(this.questions).length) {
+        this.selectedQuestion = this.selectedQuestion + 1;
+        this.number = this.selectedQuestion;
       }
-    })
+    });
   },
   data() {
     return {
-      number: '1',
-      selectedQuestion: 1,
+      number: "1",
+      selectedQuestion: 3,
       questions: {
         1: {
           title: "Em quais segmentos a Nextios atuará?",
-          component: wordSwipe
+          component: wordSwipe,
         },
         2: {
-          title: "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
-          component: drag
-        }
-      }
-    }
+          title:
+            "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
+          component: drag,
+        },
+        3: {
+          title: "Como está estruturado o portifólio de serviços da Nextios?",
+          component: options,
+          configs: {
+            chooseLimit: 1,
+            options: [
+              "Serviços, Serviços de Infraestrutura, Soluções de Negócios e APM",
+              "Serviços, E-commerce, Marketing Digital e APM",
+              "Serviços de Infraestrutura e AWS",
+              "AWS e Serviços de Infraestrutura",
+            ],
+          },
+        },
+        4: {
+          title:
+            "Qual o nosso grau de parceria com a AWS e quais competências que temos?",
+          component: options,
+          configs: {
+            chooseLimit: 2,
+            options: [
+              "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
+              "Parceiro Premier, com competências MSP e Storage",
+              "Parceiro Advanced, com competências Well-Architected e MSP - Managed Service Provider",
+            ],
+          },
+        },
+      },
+    };
   },
   computed: {
-    imageQuestion(){
-      return require(`../../../public/img/question_${("0" + this.number).slice(-2)}.png`)
-    }
+    imageQuestion() {
+      return require(`../../../public/img/question_${("0" + this.number).slice(
+        -2
+      )}.png`);
+    },
   },
-}
+};
 </script>
 
 <style>
-.btn{
+.btn {
   background-color: #1e3344;
   color: #fff;
 }
 
-#question{
-    vertical-align: top;
-    /* border: 1px solid black; */
-    position: relative;
-    width: 60%;
-    top: 20%;
-    left: 15%;
+#question {
+  vertical-align: top;
+  /* border: 1px solid black; */
+  position: relative;
+  width: 60%;
+  top: 20%;
+  left: 15%;
 }
-#question img{
-  width:100%;
-  height:100%;
+#question img {
+  width: 100%;
+  height: 100%;
 }
 
-.footer{
+.footer {
   width: 100%;
   display: flex;
   align-items: flex-end;
@@ -113,32 +145,31 @@ export default {
   margin-right: 15%;
 }
 
-.left{
+.left {
   display: block;
   height: 100vh;
   width: 40%;
-  float:left;
+  float: left;
   overflow: hidden;
 }
 
-
-.right{
-  float:left;
+.right {
+  float: left;
   display: block;
   height: 100vh;
   width: 60%;
 }
 
-#question-title{
-  margin-top:40px;
-  background-image: url('../../../public/img/faixa_pergunta.png') !important;
+#question-title {
+  margin-top: 40px;
+  background-image: url("../../../public/img/faixa_pergunta.png") !important;
   background-position: right;
   background-repeat: no-repeat;
   background-size: cover;
   height: 18%;
   width: 100%;
 }
-#question-title p{
+#question-title p {
   margin: 30px;
   margin-left: 7%;
   /* border: 1px solid black; */
@@ -150,17 +181,14 @@ export default {
   height: 12%;
 }
 
-
-#question-body{
+#question-body {
   /* border:1px solid black; */
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin:10px 0px;
+  margin: 10px 0px;
   height: 72%;
 }
-
 </style>
-<style scoped>
+<style scoped></style>
 
-</style>
