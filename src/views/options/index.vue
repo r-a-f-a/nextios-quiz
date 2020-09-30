@@ -1,5 +1,5 @@
 <template>
-  <div class="drag">
+  <div class="options">
     <ol class="options-list">
       <li
         class="option-item"
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "drag",
+  name: "options",
   props: ["configs"],
   mounted() {
     this.$events.off("VALIDATE_QUESTION");
