@@ -27,6 +27,7 @@
 import wordSwipe from "../wordswipe";
 import drag from "../drag";
 import options from "../options";
+import complete from "../complete";
 
 export default {
   name: "question",
@@ -68,7 +69,7 @@ export default {
   data() {
     return {
       number: "1",
-      selectedQuestion: 3,
+      selectedQuestion: 5,
       questions: {
         1: {
           title: "Em quais segmentos a Nextios atuará?",
@@ -102,6 +103,39 @@ export default {
               "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
               "Parceiro Premier, com competências MSP e Storage",
               "Parceiro Advanced, com competências Well-Architected e MSP - Managed Service Provider",
+            ],
+          },
+        },
+        5: {
+          title: "Qual é o propósito da Nextios?",
+          component: complete,
+          configs: {
+            words: [
+              "prosperar",
+              "transformação digital",
+              "empoderar",
+              "negócios",
+              "e",
+              "ao",
+              "empresas",
+              "pessoas",
+              "através",
+              "por meio",
+              "da",
+              "de",
+              "do",
+              "tecnologia",
+              "mercado",
+              "parceiros",
+              "serviços",
+              "soluções",
+              "aws",
+              "sistemas",
+              "data center",
+              "excelência",
+              "qualidade",
+              "código fonte",
+              "infraestrutura",
             ],
           },
         },
@@ -191,4 +225,3 @@ export default {
 }
 </style>
 <style scoped></style>
-
