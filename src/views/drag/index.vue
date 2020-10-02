@@ -6,7 +6,6 @@
           <span class='year'>{{year}}</span>
         </div>
         <div class="boxItem dropzone" data-type="answer" :data-year="year"></div>
-      
       </div>
     </div>
     <div class="container timeline-answer">

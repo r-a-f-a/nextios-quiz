@@ -140,6 +140,7 @@ export default {
           title: "Complete as frases que definem os 4 pilares da cultura Nextios",
           component: lug,
           configs: {
+            options: ['parceiros na tecnologia','desenvolvemos','nosso código fonte','melhor solução'],
             phrases: [
               [
                 {
@@ -147,7 +148,7 @@ export default {
                   dragabble: false
                 },
                 {
-                  value: 'nosso código fonte',
+                  value: '',
                   draggable: true
                 },
                 {
@@ -157,7 +158,7 @@ export default {
               ],
               [
                 {
-                  value: 'parceiros na tecnologia',
+                  value: '',
                   draggable: true
                 },
                 {
@@ -167,7 +168,7 @@ export default {
               ],
               [
                 {
-                  value: 'desenvolvemos',
+                  value: '',
                   draggable: true
                 },
                 {
@@ -181,7 +182,7 @@ export default {
                   draggable: false
                 },
                 {
-                  value: 'melhor solução',
+                  value: '',
                   draggable: true
                 },
                 {

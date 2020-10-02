@@ -10,6 +10,8 @@
               v-for="(word, i) in phrase" 
               :key='`word-${i}`'
               :data-awnser="word.value"
+              :data-phrase="index"
+              :data-word="i"
               :class="{ 'dropzone line': word.draggable, 'upper' : i === 0}"
             > 
               {{ word.draggable ? "" : word.value }}
@@ -20,7 +22,7 @@
     </div>
     <div class="container initial-zone">
       <div class="list-words dropzone">
-        <div class="item" v-for="(item, index) in list" :key='`list-${index}`'>
+        <div class="item" v-for="(item, index) in configs.options" :data-option="index" :key='`list-${index}`'>
           <span class="item-word">{{ item }}</span>
         </div>
       </div>
@@ -40,10 +42,27 @@ export default {
    this.$events.on("VALIDATE_QUESTION", () => {
     this.validate();
    });
-   this.$events.off('SELECT_ANSWER')
-   this.$events.on('SELECT_ANSWER', (anwser) => {
-     _this.result = anwser
-     console.log('RESULT')
+   this.$off('DRAG_ANSWER')
+   this.$on('DRAG_ANSWER', (payload) => {
+      Object.keys(_this.answer).forEach((answer) => {  
+        console.log('ERASE', {answer})
+        // Object.values(answer).find((key) => {  
+        // if(answer[key] ===  payload.answer){
+        //   _this.$delete(_this.answer[index], key)
+        // }
+        // }) 
+      })
+      // console.log('DRG_ANSWER', payload)
+      Object.keys(payload.answer).forEach((key) => {
+        if(!_this.answer[payload.phrase]) _this.answer[payload.phrase] = {}
+        _this.answer[payload.phrase][key] = payload.answer[key]
+      })
+
+      
+
+      
+
+     
    })
    const droppable = new Droppable(document.querySelectorAll('.container'), {
     draggable: '.item',
@@ -53,32 +72,49 @@ export default {
     }
   })
   droppable.on('droppable:stop', (evt) => {
-    // console.log('EVT', evt)
-    let anwser = evt.dropzone.dataset.awnser
-    _this.$events.emit('SELECT_ANSWER', anwser)
-    // this.mountedArray(anwser)
+    console.log('EVT',evt)
+    let phrase = evt.dropzone.dataset.phrase // DROPZONE
+    let word = evt.dropzone.dataset.word // DROPZONE
+    let answer = evt.dragEvent.source.dataset.option // ITEM
+    _this.$emit('DRAG_ANSWER', {phrase, answer: _this.processPhrase(phrase, word, answer)})
   });
  },
  data() {
   return{
-   letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
-    list: [],
-    result: {}
+    letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    answer: {},
+    mappingOpt: {}
   }
  },
  methods: {
-  getList() {
-    this.configs.phrases.forEach(phrase => {
-      Object.values(phrase).forEach(word =>{
-        if(word.draggable) {
-          this.list.push(word.value)
+    processPhrase (phraseIndex, wordIndex, optionIndex) {
+
+
+      // A: PALAVRA __________ .
+      // A: PALAVRA __________ TEST _______.
+
+      // A: [0]: 
+        console.log(phraseIndex)
+        // let phrase = this.configs.phrases[phraseIndex]
+        let result = {}
+        if(this.mappingOpt[optionIndex]) {
+          this.$delete(this.answer[this.mappingOpt[optionIndex].phraseIndex], this.mappingOpt[optionIndex].wordIndex)
+          if(Object.keys(this.answer[this.mappingOpt[optionIndex].phraseIndex]).length === 0) {
+            this.$delete(this.answer,this.mappingOpt[optionIndex].phraseIndex)
+          }
         }
-      })
-    })
-  }
- },
- created(){
-  this.getList()
+        this.mappingOpt[optionIndex] = {
+          phraseIndex,
+          wordIndex
+        }
+        // phrase[wordIndex].value = this.configs.options[optionIndex]
+        result[wordIndex] = this.configs.options[optionIndex]
+        // let result = []
+        // phrase.forEach(element => {
+        //    result.push(element.value)
+        // });
+        return result
+    }  
  }
 }
 </script>
