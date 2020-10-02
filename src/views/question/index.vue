@@ -24,17 +24,14 @@
 </template>
 
 <script>
-import wordSwipe from "../wordswipe";
-import drag from "../drag";
-import options from "../options";
-import complete from "../complete";
+import wordSwipe from '../wordswipe'
+import drag from '../drag'
+import options from '../options'
+import complete from '../complete'
+import lug from '../lug'
 
 export default {
   name: "question",
-  components: {
-    wordSwipe,
-    // drag
-  },
   methods: {
     // prev(){
     //   if(this.selectedQuestion > 1){
@@ -69,7 +66,7 @@ export default {
   data() {
     return {
       number: "1",
-      selectedQuestion: 5,
+      selectedQuestion: 6,
       questions: {
         1: {
           title: "Em quais segmentos a Nextios atuará?",
@@ -98,7 +95,7 @@ export default {
             "Qual o nosso grau de parceria com a AWS e quais competências que temos?",
           component: options,
           configs: {
-            chooseLimit: 2,
+            chooseLimit: 3,
             options: [
               "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
               "Parceiro Premier, com competências MSP e Storage",
@@ -139,7 +136,63 @@ export default {
             ],
           },
         },
-      },
+        6: {
+          title: "Complete as frases que definem os 4 pilares da cultura Nextios",
+          component: lug,
+          configs: {
+            phrases: [
+              [
+                {
+                  value: 'Pessoas são',
+                  dragabble: false
+                },
+                {
+                  value: 'nosso código fonte',
+                  draggable: true
+                },
+                {
+                  value: '.',
+                  draggable: false
+                }
+              ],
+              [
+                {
+                  value: 'parceiros na tecnologia',
+                  draggable: true
+                },
+                {
+                  value: ', companheiros reais.',
+                  draggable: false
+                }
+              ],
+              [
+                {
+                  value: 'desenvolvemos',
+                  draggable: true
+                },
+                {
+                  value: 'um futuro melhor.',
+                  draggable: false
+                }
+              ],
+              [
+                {
+                  value: 'Focados na',
+                  draggable: false
+                },
+                {
+                  value: 'melhor solução',
+                  draggable: true
+                },
+                {
+                  value: '.',
+                  draggable: false
+                }
+              ]
+            ]
+          }
+        }
+      }
     };
   },
   computed: {
@@ -172,11 +225,9 @@ export default {
 }
 
 .footer {
-  width: 100%;
-  display: flex;
-  align-items: flex-end;
-  flex-direction: column;
-  margin-right: 15%;
+  position: absolute;
+  margin-top: 32%;
+  margin-left: 41%;
 }
 
 .left {

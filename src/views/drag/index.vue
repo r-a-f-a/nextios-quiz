@@ -1,21 +1,21 @@
 <template>
   <div class="drag">
-  <div class='timeline'>
-    <div class="myBox container"  v-for="year in years"  :key="year">
-      <div class="boxItem">
-        <span class='year'>{{year}}</span>
-      </div>
-      <div class="boxItem dropzone" data-type="answer" :data-year="year"></div>
+    <div class='timeline'>
+      <div class="myBox container"  v-for="year in years"  :key="year">
+        <div class="boxItem">
+          <span class='year'>{{year}}</span>
+        </div>
+        <div class="boxItem dropzone" data-type="answer" :data-year="year"></div>
       
+      </div>
     </div>
-  </div>
-      <div class="container timeline-answer">
-        <div class="dropzone" v-for="(item,index) in questions" :key='`list_1_${index}`'>
+    <div class="container timeline-answer">
+      <div class="dropzone" v-for="(item,index) in questions" :key='`list_1_${index}`'>
         <div class='box-question item' :class='`answer-${index}`'  :data-answer="index">
             <span>{{index}}</span>
             <p>{{item}}</p>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </template>
