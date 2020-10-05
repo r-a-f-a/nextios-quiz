@@ -29,6 +29,7 @@ import drag from '../drag'
 import options from '../options'
 import complete from '../complete'
 import lug from '../lug'
+import jwt from '@allinmkt/jwt'
 
 export default {
   name: "question",
@@ -42,8 +43,13 @@ export default {
     next() {
       this.$events.emit("VALIDATE_QUESTION");
     },
+    getUser() {
+      var user = localStorage.getItem("_user")
+      this.user = jwt(user, process.env.VUE_APP_SECRET).verify()
+    }
   },
   mounted() {
+    this.getUser()
     this.$events.off("TIP_QUESTION");
     this.$events.on("TIP_QUESTION", (tip) => {
       this.$notify({
@@ -53,31 +59,48 @@ export default {
         text: tip.text,
       });
     });
-    this.$events.off("ANSWER_QUESTION");
-    this.$events.on("ANSWER_QUESTION", (answer) => {
-      // CHAMA API MICHEL COM A RESPOSTA RECEBIDA
-      console.log(answer);
-      if (this.selectedQuestion != Object.keys(this.questions).length) {
-        this.selectedQuestion = this.selectedQuestion + 1;
-        this.number = this.selectedQuestion;
+    this.$events.off("QUESTION_STARTED")
+    this.$events.on("QUESTION_STARTED", (question) => {
+      let payload = {
+        userId: this.user.id,
+        type: "QUESTION_STARTED",
+        data: {
+          property: question
+        }
       }
+      this.$api.call("post", "/events", payload)
+    })
+    this.$events.off("QUESTION_ANSWERED");
+    this.$events.on("QUESTION_ANSWERED", (answer) => {
+      let payload = {
+        userId: this.user.id,
+        type: "QUESTION_ANSWERED",
+        data: answer
+      }
+      this.$api.call("post", "/events", payload)
+      .then(() => {
+        if (this.selectedQuestion != Object.keys(this.questions).length) {
+          this.selectedQuestion = this.selectedQuestion + 1;
+          this.number = this.selectedQuestion;
+        }
+      })
+      .catch( (error) => {
+        console.log(error)
+      })
     });
   },
   data() {
     return {
       number: "1",
-      selectedQuestion: 6,
+      selectedQuestion: 1,
+      user: {},
       questions: {
         1: {
-          title: "Em quais segmentos a Nextios atuará?",
-          component: wordSwipe,
-        },
-        2: {
           title:
             "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
           component: drag,
         },
-        3: {
+        2: {
           title: "Como está estruturado o portifólio de serviços da Nextios?",
           component: options,
           configs: {
@@ -90,53 +113,34 @@ export default {
             ],
           },
         },
+        3: {
+          title: "Qual o foco da Nextios em serviços de computação em nuvem?",
+          component: lug,
+          configs: {
+            options: ["cloud pública", "cloud privada/datacenter híbrido"],
+            phrases: [
+              [
+                {
+                  value: 'AWS como',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+                {
+                  value: 'VMWARE (antigo ED) como',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+              ]
+            ]
+          }
+        },
         4: {
-          title:
-            "Qual o nosso grau de parceria com a AWS e quais competências que temos?",
-          component: options,
-          configs: {
-            chooseLimit: 3,
-            options: [
-              "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
-              "Parceiro Premier, com competências MSP e Storage",
-              "Parceiro Advanced, com competências Well-Architected e MSP - Managed Service Provider",
-            ],
-          },
-        },
-        5: {
-          title: "Qual é o propósito da Nextios?",
-          component: complete,
-          configs: {
-            words: [
-              "prosperar",
-              "transformação digital",
-              "empoderar",
-              "negócios",
-              "e",
-              "ao",
-              "empresas",
-              "pessoas",
-              "através",
-              "por meio",
-              "da",
-              "de",
-              "do",
-              "tecnologia",
-              "mercado",
-              "parceiros",
-              "serviços",
-              "soluções",
-              "aws",
-              "sistemas",
-              "data center",
-              "excelência",
-              "qualidade",
-              "código fonte",
-              "infraestrutura",
-            ],
-          },
-        },
-        6: {
           title: "Complete as frases que definem os 4 pilares da cultura Nextios",
           component: lug,
           configs: {
@@ -192,6 +196,130 @@ export default {
               ]
             ]
           }
+        },
+        5: {
+          title: "Em quais segmentos a Nextios atuará?",
+          component: wordSwipe,
+        },
+        6: {
+          title: "Como a Nextios quer ser percebida no mercado? Selecione todas as corretas.",
+          component: options,
+          configs: {
+            chooseLimit: 4,
+            options: [
+              "Atendimento de Excelência",
+              "Inteligência agregada à capacidade de execução",
+              "Tecnologia é meio, solução é o fim",
+              "Papel de construtores"
+            ]
+          }
+        },
+        7: {
+          title: "Por que uma nova marca? (selecione as duas opções que melhor de aplicam)",
+          component: options,
+          configs: {
+            chooseLimit: 2,
+            options: [
+              "Além de uma nova marca, somos uma nova unidade de negócios com posicionamento, processos internos e portfólio de apresentação. A nova marca facilita a representação da nossa transformação para o mercado.",
+              "Oferta é muito diferente do varejo",
+              "A associação com a Locaweb era mal vista pelo mercado ",
+              "Para termos novidade para contar para o mercado brasileiro",
+              "Parceiro Advanced, com competências Well-Architected e MSP - Managed Service Provider"
+            ]
+          }
+        },
+        8: {
+          title:
+            "Qual o nosso grau de parceria com a AWS e quais competências que temos?",
+          component: options,
+          configs: {
+            chooseLimit: 3,
+            options: [
+              "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
+              "Parceiro Premier, com competências MSP e Storage",
+              "Parceiro Advanced, com competências Well-Architected e MSP - Managed Service Provider",
+            ],
+          },
+        },
+        9: {
+          title: "Qual a visão da Nextios? Complete a frase.",
+          component: lug,
+          configs: {
+            options: ['reconhecidos pelo mercado', 'tecnologia', 'provedor de soluções', 'gerenciados'],
+            phrases: [
+              [
+                {
+                  value: 'Seremos',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+                {
+                  value: 'Parceiros e profissionais de',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+                {
+                  value: 'como o mais competente',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+                {
+                  value: 'e serviços',
+                  draggable: false
+                },
+                {
+                  value: '',
+                  draggable: true
+                },
+                {
+                  value: 'do país',
+                  draggable: false
+                },
+              ]
+            ]
+          }
+        },
+        10: {
+          title: "Qual é o propósito da Nextios?",
+          component: complete,
+          configs: {
+            words: [
+              "prosperar",
+              "transformação digital",
+              "empoderar",
+              "negócios",
+              "e",
+              "ao",
+              "empresas",
+              "pessoas",
+              "através",
+              "por meio",
+              "da",
+              "de",
+              "do",
+              "tecnologia",
+              "mercado",
+              "parceiros",
+              "serviços",
+              "soluções",
+              "aws",
+              "sistemas",
+              "data center",
+              "excelência",
+              "qualidade",
+              "código fonte",
+              "infraestrutura",
+            ],
+          },
         }
       }
     };

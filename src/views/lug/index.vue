@@ -44,25 +44,11 @@ export default {
    });
    this.$off('DRAG_ANSWER')
    this.$on('DRAG_ANSWER', (payload) => {
-      Object.keys(_this.answer).forEach((answer) => {  
-        console.log('ERASE', {answer})
-        // Object.values(answer).find((key) => {  
-        // if(answer[key] ===  payload.answer){
-        //   _this.$delete(_this.answer[index], key)
-        // }
-        // }) 
-      })
       // console.log('DRG_ANSWER', payload)
       Object.keys(payload.answer).forEach((key) => {
         if(!_this.answer[payload.phrase]) _this.answer[payload.phrase] = {}
         _this.answer[payload.phrase][key] = payload.answer[key]
       })
-
-      
-
-      
-
-     
    })
    const droppable = new Droppable(document.querySelectorAll('.container'), {
     draggable: '.item',
@@ -72,7 +58,6 @@ export default {
     }
   })
   droppable.on('droppable:stop', (evt) => {
-    console.log('EVT',evt)
     let phrase = evt.dropzone.dataset.phrase // DROPZONE
     let word = evt.dropzone.dataset.word // DROPZONE
     let answer = evt.dragEvent.source.dataset.option // ITEM
@@ -83,18 +68,20 @@ export default {
   return{
     letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
     answer: {},
-    mappingOpt: {}
+    mappingOpt: {},
+    tip: {
+      type: "error",
+      title: "Ops!",
+      text: "Preencha todas as palavras para continuar."
+    }
   }
  },
  methods: {
     processPhrase (phraseIndex, wordIndex, optionIndex) {
-
-
       // A: PALAVRA __________ .
       // A: PALAVRA __________ TEST _______.
-
       // A: [0]: 
-        console.log(phraseIndex)
+        // console.log(phraseIndex)
         // let phrase = this.configs.phrases[phraseIndex]
         let result = {}
         if(this.mappingOpt[optionIndex]) {
@@ -114,7 +101,19 @@ export default {
         //    result.push(element.value)
         // });
         return result
-    }  
+    },
+    validate() {
+      this.$events.emit("ANSWER_QUESTION", this.answer)
+      // if( Object.keys(this.answer).length === this.configs.options.length){
+      //   console.log('OK')
+      //   this.$events.emit("ANSWER_QUESTION", this.answer)
+      // }else{
+      //   this.$events.emit('TIP_QUESTION', this.tip)
+      // }
+    } 
+ },
+ created(){
+   this.$events.emit('INIT_QUESTIONS', )
  }
 }
 </script>

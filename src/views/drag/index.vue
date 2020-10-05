@@ -23,26 +23,29 @@
 import { Droppable } from '@shopify/draggable'
 export default {
  name: "drag",
+ created() {
+  this.$events.emit("QUESTION_STARTED", this.question)
+ },
  mounted() {
-   this.$events.off('VALIDATE_QUESTION')
+  let _this = this
+  this.$events.off('VALIDATE_QUESTION')
   this.$events.on('VALIDATE_QUESTION', () => {
     this.validate()
   })
-   let _this = this
-   this.$off('DRAG_ANSWER')
-   this.$on('DRAG_ANSWER', (payload) => {
-     console.log('RESET SELECTED WORD', payload.answer)
-     Object.keys(_this.answer).find((key) => {  
-       if(_this.answer[key] ===  payload.answer){
-         _this.$delete(_this.answer, key)
-       }
-      })
-      console.log('HAVE YEAR', _this.years.indexOf(payload.year))
-      if(_this.years.indexOf(payload.year) >= 0){
-        this.answer[payload.year] = payload.answer
-        console.log('THIS', this.answer)
+  this.$off('DRAG_ANSWER')
+  this.$on('DRAG_ANSWER', (payload) => {
+    console.log('RESET SELECTED WORD', payload.answer)
+    Object.keys(_this.answer).find((key) => {  
+      if(_this.answer[key] ===  payload.answer){
+        _this.$delete(_this.answer, key)
       }
-   })
+    })
+    console.log('HAVE YEAR', _this.years.indexOf(payload.year))
+    if(_this.years.indexOf(payload.year) >= 0){
+      this.answer[payload.year] = payload.answer
+      console.log('THIS', this.answer)
+    }
+  })
 
   const droppable = new Droppable(document.querySelectorAll('.container'), {
     draggable: '.item',
@@ -68,30 +71,31 @@ export default {
  },
  methods: {
    validate(){
-     if(Object.keys(this.answer).length === 5){
-      this.$events.emit('ANSWER_QUESTION', this.answer) 
-     } else {
+    if(Object.keys(this.answer).length === 5){
+      this.$events.emit('QUESTION_ANSWERED', { question: this.question, response: this.answer } ) 
+    } else {
       this.$events.emit('TIP_QUESTION', this.tip)
-     }
+    }
    }
  },
  data() {
    return {
-      droppableOrigin: '',
-      tip: {
-        type: "error",
-        title: "Ops!",
-        text: "Preencha todos os campos para continuar."
-      },
-      questions: {
-        'A' :  "Nasce a Locaweb IDC, uma divisão de negócios da Locaweb, com soluções mais robustas de internet e Data Center.",
-        'B' :  "Locaweb IDC inicia uma jornada de reestruturação para atender o mercado corporativo e se torna Locaweb Soluções Corporativas",
-        'C' :  "Locaweb Soluções Corporativas passa por um rebranding de marca e muda seu nome para Locaweb Corp",
-        'D' :  "Locaweb Corp adquire a Cluster2GO, fruto da fusão entre Ananke, Primehost e ION/NOVA ION e passa a oferecer serviços de nuvem pública e privada.",
-        'E' : "Locaweb Corp Cluster2GO inicia uma jornada de evolução, rumo a um futuro tecnológico, eficiente e sustentável e torna-se a Nextios, que vai muito além de serviços de infraestrutura, datacenter e cloud."
-      },
-      years: ['2003','2014','2017','2018','2020'],
-      answer: {}
+    question: 1,
+    droppableOrigin: '',
+    tip: {
+      type: "error",
+      title: "Ops!",
+      text: "Preencha todos os campos para continuar."
+    },
+    questions: {
+      'A' :  "Nasce a Locaweb IDC, uma divisão de negócios da Locaweb, com soluções mais robustas de internet e Data Center.",
+      'B' :  "Locaweb IDC inicia uma jornada de reestruturação para atender o mercado corporativo e se torna Locaweb Soluções Corporativas",
+      'C' :  "Locaweb Soluções Corporativas passa por um rebranding de marca e muda seu nome para Locaweb Corp",
+      'D' :  "Locaweb Corp adquire a Cluster2GO, fruto da fusão entre Ananke, Primehost e ION/NOVA ION e passa a oferecer serviços de nuvem pública e privada.",
+      'E' : "Locaweb Corp Cluster2GO inicia uma jornada de evolução, rumo a um futuro tecnológico, eficiente e sustentável e torna-se a Nextios, que vai muito além de serviços de infraestrutura, datacenter e cloud."
+    },
+    years: ['2003','2014','2017','2018','2020'],
+    answer: {}
    }
  }
 }

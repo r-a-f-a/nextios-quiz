@@ -52,7 +52,7 @@ export default {
         if(response.data.code === 200){
           localStorage.setItem('_validation', jwt({'validation': response.data.result}, process.env.VUE_APP_SECRET).generate())
           this.$root.$data.validation = response.data.result
-          this.$router.push('/questions/intro')
+          this.$router.push('/intro')
         } else {
           localStorage.removeItem('_validation')
         }
