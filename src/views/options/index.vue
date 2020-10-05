@@ -9,7 +9,11 @@
       >
         <span class="option-index option">{{ letters[idx] }}</span>
         <span
-          :class="{'option-desc': true, disabled: !answers.includes(option), option: true}"
+          :class="{
+            'option-desc': true,
+            disabled: !answers.includes(option),
+            option: true,
+          }"
           >{{ option }}</span
         >
       </li>
@@ -28,15 +32,27 @@ export default {
     });
   },
   methods: {
+    removeOption(option) {
+      const indexToRemove = this.answers.indexOf(option);
+      this.answers.splice(indexToRemove, 1);
+      return;
+    },
     chooseOption(option) {
-      if (this.answers.includes(option)) {
-        const indexToRemove = this.answers.indexOf(option);
-        this.answers.splice(indexToRemove, 1);
-        return;
-      }
+      // REMOVING OPTION
+      if (this.answers.includes(option)) return this.removeOption(option);
+
+      // IF CHOOSE LIMIT IS NULL, LIMIT NOT EXIST
       if (!this.configs.chooseLimit) return this.answers.push(option);
+
+      // IF ARE NOT AT THE LIMIT
       if (this.answers.length != this.configs.chooseLimit)
         this.answers.push(option);
+
+      // IF ONLY HAVE 1 ANSWER, TRANSFORM MECHANISM INTO A RADIO
+      if (this.configs.chooseLimit == 1) {
+        this.removeOption(this.answers[0]);
+        this.answers.push(option);
+      }
     },
     validate() {
       if (
@@ -98,5 +114,4 @@ export default {
   max-height: 40px;
   margin: 0 15px;
 }
-
 </style>
