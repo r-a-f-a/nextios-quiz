@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       number: "1",
-      selectedQuestion: 6,
+      selectedQuestion: 4,
       user: {},
       questions: {
         1: {

@@ -44,11 +44,12 @@ export default {
    });
    this.$off('DRAG_ANSWER')
    this.$on('DRAG_ANSWER', (payload) => {
-      // console.log('DRG_ANSWER', payload)
-      Object.keys(payload.answer).forEach((key) => {
-        if(!_this.answer[payload.phrase]) _this.answer[payload.phrase] = {}
-        _this.answer[payload.phrase][key] = payload.answer[key]
-      })
+      if(payload.phrase){
+        Object.keys(payload.answer).forEach((key) => {
+          if(!_this.answerOpt[payload.phrase]) _this.$set(_this.answerOpt,payload.phrase, {})
+          _this.answerOpt[payload.phrase][key] = payload.answer[key]
+        })
+      }
    })
    const droppable = new Droppable(document.querySelectorAll('.container'), {
     draggable: '.item',
@@ -61,59 +62,53 @@ export default {
     let phrase = evt.dropzone.dataset.phrase // DROPZONE
     let word = evt.dropzone.dataset.word // DROPZONE
     let answer = evt.dragEvent.source.dataset.option // ITEM
-    _this.$emit('DRAG_ANSWER', {phrase, answer: _this.processPhrase(phrase, word, answer)})
+    _this.$emit('DRAG_ANSWER', { phrase, answer: _this.processPhrase(phrase, word, answer)})
   });
  },
  data() {
-  return{
+  return {
     letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
-    answer: {},
-    mappingOpt: {},
-    tip: {
-      type: "error",
-      title: "Ops!",
-      text: "Preencha todas as palavras para continuar."
-    }
+    answerOpt: {},
+    mappingOpt: {}
   }
  },
+ computed : {
+   answer () {
+    let result = {}
+    Object.keys(this.answerOpt).forEach((phrase) => {
+      result[phrase] = this.makePhrase(phrase)
+    })
+     return result
+   }
+ },
  methods: {
+    makePhrase(index){
+      let phrase = Object.values(this.configs.phrases[index])
+      Object.keys(this.answerOpt[index]).forEach((key) => {
+          let element = this.answerOpt[index][key]
+          phrase[key].value = element
+      })
+      return phrase.map(function(word){ return word.value; }).join(" ").replace(' ,',',').replace(' .','.').toLowerCase()
+    },
     processPhrase (phraseIndex, wordIndex, optionIndex) {
-      // A: PALAVRA __________ .
-      // A: PALAVRA __________ TEST _______.
-      // A: [0]: 
-        // console.log(phraseIndex)
-        // let phrase = this.configs.phrases[phraseIndex]
-        let result = {}
-        if(this.mappingOpt[optionIndex]) {
-          this.$delete(this.answer[this.mappingOpt[optionIndex].phraseIndex], this.mappingOpt[optionIndex].wordIndex)
-          if(Object.keys(this.answer[this.mappingOpt[optionIndex].phraseIndex]).length === 0) {
-            this.$delete(this.answer,this.mappingOpt[optionIndex].phraseIndex)
-          }
+      let result = {}
+      let mapping  = this.mappingOpt[optionIndex]
+      if(mapping) {
+        this.$delete(this.answerOpt[mapping.phraseIndex], mapping.wordIndex)
+        if(Object.keys(this.answerOpt[this.mappingOpt[optionIndex].phraseIndex]).length === 0) {
+          this.$delete(this.answerOpt,this.mappingOpt[optionIndex].phraseIndex)
         }
+        this.$delete(this.mappingOpt, optionIndex)
+      }
+      if(phraseIndex && wordIndex){
         this.mappingOpt[optionIndex] = {
           phraseIndex,
           wordIndex
         }
-        // phrase[wordIndex].value = this.configs.options[optionIndex]
-        result[wordIndex] = this.configs.options[optionIndex]
-        // let result = []
-        // phrase.forEach(element => {
-        //    result.push(element.value)
-        // });
-        return result
-    },
-    validate() {
-      this.$events.emit("ANSWER_QUESTION", this.answer)
-      // if( Object.keys(this.answer).length === this.configs.options.length){
-      //   console.log('OK')
-      //   this.$events.emit("ANSWER_QUESTION", this.answer)
-      // }else{
-      //   this.$events.emit('TIP_QUESTION', this.tip)
-      // }
-    } 
- },
- created(){
-   this.$events.emit('INIT_QUESTIONS', )
+      }
+      result[wordIndex] = this.configs.options[optionIndex]
+      return result
+    }  
  }
 }
 </script>
@@ -190,7 +185,7 @@ export default {
   border-bottom: 4px solid #1e3344;
 }
 .list-words{
-  /* border: 2px solid #000; */
+  border: 2px solid #000;
   display: grid;
   border-radius: 5px;
   grid-template-columns: 250px 250px;
@@ -198,6 +193,9 @@ export default {
   grid-column-gap: 10px;
   grid-row-gap: 16px;
   padding: 10px;
+}
+.list-words .item {
+  border: 1px solid #000;
 }
 .initial-zone{
   display: flex;
