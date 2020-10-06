@@ -117,6 +117,9 @@ export default {
   validate() {
     if(Object.keys(this.mappingOpt).length == this.configs.options.length){
       this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.answer } )
+      this.answer = {}
+      this.mappingOpt = {}
+      this.answerOpt = {}
     } else {
       this.$events.emit("TIP_QUESTION", this.tip);
     }
@@ -149,7 +152,6 @@ export default {
 
 .option-item {
   margin: 25px 0;
-  max-width: 90%;
   display: flex;
   flex-wrap: wrap;
 }
