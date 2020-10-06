@@ -380,9 +380,10 @@ export default {
 }
 
 .footer {
-  position: absolute;
-  margin-top: 499px;
-  margin-left: 706px;
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+  margin-right: 135px;
 }
 
 .left {
@@ -427,7 +428,7 @@ export default {
   align-items: center;
   flex-direction: column;
   margin: 10px 0px;
-  height: 72%;
+  height: 70%;
 }
 </style>
 <style scoped></style>
