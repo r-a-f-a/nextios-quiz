@@ -20,7 +20,7 @@ let scoreController = null;
 
 let wordBase = []; // Dictionary
 let wordsFound = 0; // No. of words found from the grid
-let totalWords = 2; // No. of wors loaded into the grid
+let totalWords = 7; // No. of wors loaded into the grid
 import grid from './componets/grid'
 import players from './componets/players'
 import score from './componets/score'
@@ -37,6 +37,7 @@ export default {
                 title: "Ops!",
                 text: "Encontre todas as palavras para continuar."
             },
+            question: 5,
             selPlayer: 1, // Default 2 players game
             gameOn: false,
             gameMsg: '',
@@ -80,7 +81,7 @@ export default {
         passNextPlayer: function () {
             let curPlayer;
             if (wordsFound === totalWords) {
-                this.$events.emit('ANSWER_QUESTION', "concluido") 
+                this.$events.emit('QUESTION_ANSWERED', { question: this.question, response: this.words } )
                 return;
             } else {
                this.$events.emit('TIP_QUESTION', this.tip)
@@ -99,9 +100,6 @@ export default {
             scoreController.setScore(curPlayer.score + mword.word.length * 10);
             curPlayer.score += mword.word.length * 10;
             wordsFound++;
-            // setTimeout(() => {
-            this.passNextPlayer();
-            // }, 1000);
         },
 
         onPlayerSelect: function (pcount) {

@@ -69,7 +69,21 @@ export default {
         }
       }
       this.$api.call("post", "/events", payload)
-    })
+    });
+     this.$events.off("QUIZ_FINISHED");
+    this.$events.on("QUIZ_FINISHED", () => {
+      let payload = {
+        userId: this.user.id,
+        type: "QUIZ_FINISHED",
+      }
+      this.$api.call("post", "/events", payload)
+      .then(() => {
+        this.$router.push('/finished')
+      })
+      .catch( (error) => {
+        console.log(error)
+      })
+    });
     this.$events.off("QUESTION_ANSWERED");
     this.$events.on("QUESTION_ANSWERED", (answer) => {
       let payload = {
@@ -79,7 +93,10 @@ export default {
       }
       this.$api.call("post", "/events", payload)
       .then(() => {
-        if (this.selectedQuestion != Object.keys(this.questions).length) {
+        if(answer.question === 10) {
+          this.$events.emit('QUIZ_FINISHED')
+        }
+        else if(this.selectedQuestion != Object.keys(this.questions).length) {
           this.selectedQuestion = this.selectedQuestion + 1;
           this.number = this.selectedQuestion;
         }
@@ -98,12 +115,13 @@ export default {
         1: {
           title:
             "Relacione as frases com os anos cronológicos abaixo e nos ajude a contar a evolução da marca Nextios.",
-          component: drag,
+          component: drag
         },
         2: {
           title: "Como está estruturado o portifólio de serviços da Nextios?",
           component: options,
           configs: {
+            question: 2,
             chooseLimit: 1,
             options: [
               "Serviços, Serviços de Infraestrutura, Soluções de Negócios e APM",
@@ -117,6 +135,7 @@ export default {
           title: "Qual o foco da Nextios em serviços de computação em nuvem?",
           component: lug,
           configs: {
+            question: 3,
             options: ["cloud pública", "cloud privada/datacenter híbrido"],
             phrases: [
               [
@@ -144,6 +163,7 @@ export default {
           title: "Complete as frases que definem os 4 pilares da cultura Nextios",
           component: lug,
           configs: {
+            question: 4,
             options: ['parceiros na tecnologia','desenvolvemos','nosso código fonte','melhor solução'],
             phrases: [
               [
@@ -205,6 +225,7 @@ export default {
           title: "Como a Nextios quer ser percebida no mercado? Selecione todas as corretas.",
           component: options,
           configs: {
+            question: 6,
             chooseLimit: 4,
             options: [
               "Atendimento de Excelência",
@@ -218,6 +239,7 @@ export default {
           title: "Por que uma nova marca? (selecione as duas opções que melhor de aplicam)",
           component: options,
           configs: {
+            question: 7,
             chooseLimit: 2,
             options: [
               "Além de uma nova marca, somos uma nova unidade de negócios com posicionamento, processos internos e portfólio de apresentação. A nova marca facilita a representação da nossa transformação para o mercado.",
@@ -233,6 +255,7 @@ export default {
             "Qual o nosso grau de parceria com a AWS e quais competências que temos?",
           component: options,
           configs: {
+            question: 8,
             chooseLimit: 3,
             options: [
               "Parceiro Advanced, com competências MSP - Managed Service Provider e Storage",
@@ -245,6 +268,7 @@ export default {
           title: "Qual a visão da Nextios? Complete a frase.",
           component: lug,
           configs: {
+            question: 9,
             options: ['reconhecidos pelo mercado', 'tecnologia', 'provedor de soluções', 'gerenciados'],
             phrases: [
               [
@@ -292,6 +316,7 @@ export default {
           title: "Qual é o propósito da Nextios?",
           component: complete,
           configs: {
+            question: 10,
             words: [
               "prosperar",
               "transformação digital",
@@ -326,9 +351,10 @@ export default {
   },
   computed: {
     imageQuestion() {
-      return require(`../../../public/img/question_${("0" + this.number).slice(
-        -2
-      )}.png`);
+      return require(`../../../public/img/question_01.png`);
+      // return require(`../../../public/img/question_${("0" + this.number).slice(
+      //   -2
+      // )}.png`);
     },
   },
 };

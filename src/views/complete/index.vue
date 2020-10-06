@@ -55,7 +55,7 @@ export default {
     },
     validate() {
       if (this.phrase.length > 0) {
-        this.$events.emit("ANSWER_QUESTION", this.phrase);
+        this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.phrase } )
         this.phrase = [];
       } else {
         this.$events.emit("TIP_QUESTION", this.tip);
