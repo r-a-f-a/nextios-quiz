@@ -3,12 +3,21 @@ import VueRouter from "vue-router"
 import Start from "@/views/start"
 import Validate from "@/views/validate"
 import Intro from "@/views/intro"
-import Finish from "@/views/finish"
-import Question from "@/views/question"
-import Words from "@/views/steps/words"
-import Puzzle from '@/views/steps/puzzle'
+import Finished from "@/views/finished"
+import Questions from "@/views/questions"
 
 Vue.use(VueRouter)
+
+
+function checkAuth (to, from, next) {
+    if (!localStorage.getItem('_user')) {
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
+}
 
 const routes = [{
         path: "/",
@@ -32,7 +41,8 @@ const routes = [{
         component: Intro,
         meta: {
             'background': 'home'
-        }
+        },
+        beforeEnter: checkAuth
     },
     {
         path: "/questions",
@@ -40,28 +50,14 @@ const routes = [{
         component: Question,
         meta: {
             'background': 'question'
-        }
-    },
+        },
+        beforeEnter: checkAuth
+    }
     {
-        path: "/questions/words",
-        name: "Words",
-        component: Words,
-        meta: {
-            'background': 'question'
-        }
-    },
-    {
-        path: "/questions/puzzle",
-        name: "Puzzle",
-        component: Puzzle,
-        meta: {
-            'background': 'question'
-        }
-    },
-    {
-        path: "/finish",
-        name: "Finish",
-        component: Finish
+        path: "/finished",
+        name: "Finished",
+        component: Finished,
+        beforeEnter: checkAuth
     }
 ];
 

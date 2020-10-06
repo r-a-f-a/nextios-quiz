@@ -69,7 +69,12 @@ export default {
   return {
     letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
     answerOpt: {},
-    mappingOpt: {}
+    mappingOpt: {},
+    tip: {
+      type: "error",
+      title: "Ops!",
+      text: "Preencha todas as palavras para continuar.",
+    },
   }
  },
  computed : {
@@ -82,33 +87,40 @@ export default {
    }
  },
  methods: {
-    makePhrase(index){
-      let phrase = Object.values(this.configs.phrases[index])
-      Object.keys(this.answerOpt[index]).forEach((key) => {
-          let element = this.answerOpt[index][key]
-          phrase[key].value = element
-      })
-      return phrase.map(function(word){ return word.value; }).join(" ").replace(' ,',',').replace(' .','.').toLowerCase()
-    },
-    processPhrase (phraseIndex, wordIndex, optionIndex) {
-      let result = {}
-      let mapping  = this.mappingOpt[optionIndex]
-      if(mapping) {
-        this.$delete(this.answerOpt[mapping.phraseIndex], mapping.wordIndex)
-        if(Object.keys(this.answerOpt[this.mappingOpt[optionIndex].phraseIndex]).length === 0) {
-          this.$delete(this.answerOpt,this.mappingOpt[optionIndex].phraseIndex)
-        }
-        this.$delete(this.mappingOpt, optionIndex)
+  makePhrase(index){
+    let phrase = Object.values(this.configs.phrases[index])
+    Object.keys(this.answerOpt[index]).forEach((key) => {
+        let element = this.answerOpt[index][key]
+        phrase[key].value = element
+    })
+    return phrase.map(function(word){ return word.value; }).join(" ").replace(' ,',',').replace(' .','.').toLowerCase()
+  },
+  processPhrase (phraseIndex, wordIndex, optionIndex) {
+    let result = {}
+    let mapping  = this.mappingOpt[optionIndex]
+    if(mapping) {
+      this.$delete(this.answerOpt[mapping.phraseIndex], mapping.wordIndex)
+      if(Object.keys(this.answerOpt[this.mappingOpt[optionIndex].phraseIndex]).length === 0) {
+        this.$delete(this.answerOpt,this.mappingOpt[optionIndex].phraseIndex)
       }
-      if(phraseIndex && wordIndex){
-        this.mappingOpt[optionIndex] = {
-          phraseIndex,
-          wordIndex
-        }
+      this.$delete(this.mappingOpt, optionIndex)
+    }
+    if(phraseIndex && wordIndex){
+      this.mappingOpt[optionIndex] = {
+        phraseIndex,
+        wordIndex
       }
-      result[wordIndex] = this.configs.options[optionIndex]
-      return result
-    }  
+    }
+    result[wordIndex] = this.configs.options[optionIndex]
+    return result
+  },
+  validate() {
+    if(Object.keys(this.mappingOpt).length == this.configs.options.length){
+      this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.answer } )
+    } else {
+      this.$events.emit("TIP_QUESTION", this.tip);
+    }
+  }
  }
 }
 </script>
@@ -131,7 +143,7 @@ export default {
 
 .options-list {
   list-style-type: none;
-  width: 73%;
+  width: 84%;
   margin: auto;
 }
 
@@ -139,6 +151,7 @@ export default {
   margin: 25px 0;
   max-width: 90%;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .span-word{

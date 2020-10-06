@@ -313,7 +313,7 @@ export default {
           }
         },
         10: {
-          title: "Qual é o propósito da Nextios?",
+          title: "Qual é o propósito da Nextios? Clique nas palavras para formar a frase que nos representa.",
           component: complete,
           configs: {
             question: 10,
@@ -381,8 +381,8 @@ export default {
 
 .footer {
   position: absolute;
-  margin-top: 32%;
-  margin-left: 41%;
+  margin-top: 499px;
+  margin-left: 706px;
 }
 
 .left {

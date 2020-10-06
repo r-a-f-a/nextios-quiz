@@ -87,18 +87,18 @@ export default {
 
 .options-list {
   list-style-type: none;
-  width: 73%;
+  width: 90%;
   margin: auto;
 }
 
 .option {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: bold;
 }
 
 .option-item {
-  margin: 45px 0;
-  max-width: 90%;
+  margin: 35px 0;
+  max-width: 100%;
   display: flex;
 }
 
