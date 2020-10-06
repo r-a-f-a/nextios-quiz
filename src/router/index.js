@@ -47,12 +47,12 @@ const routes = [{
     {
         path: "/questions",
         name: "Question",
-        component: Question,
+        component: Questions,
         meta: {
             'background': 'question'
         },
         beforeEnter: checkAuth
-    }
+    },
     {
         path: "/finished",
         name: "Finished",
