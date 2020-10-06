@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       number: "1",
-      selectedQuestion: 4,
+      selectedQuestion: 1,
       user: {},
       questions: {
         1: {
@@ -351,10 +351,10 @@ export default {
   },
   computed: {
     imageQuestion() {
-      return require(`../../../public/img/question_01.png`);
-      // return require(`../../../public/img/question_${("0" + this.number).slice(
-      //   -2
-      // )}.png`);
+      // return require(`../../../public/img/question_01.png`);
+      return require(`../../../public/img/question_${("0" + this.selectedQuestion).slice(
+        -2
+      )}.png`);
     },
   },
 };
