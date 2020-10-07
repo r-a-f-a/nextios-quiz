@@ -43,6 +43,8 @@ export default {
    });
  },
  mounted() {
+   console.log('MOUNTED LUG')
+
    let _this = this
    this.$events.emit("QUESTION_STARTED", this.configs.question)
    this.$off('DRAG_ANSWER')
@@ -180,6 +182,7 @@ export default {
 
 .item{
   text-align: center;
+  user-select: none;
 }
 
 .dropzone{

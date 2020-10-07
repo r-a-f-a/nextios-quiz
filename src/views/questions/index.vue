@@ -6,10 +6,10 @@
       </div>
     </div>
     <div class="right">
-      <div id="question-title">
+      <div id="question-title" v-if="show">
         <p>{{ questions[selectedQuestion].title }}</p>
       </div>
-      <div id="question-body">
+      <div id="question-body" v-if="show">
         <component
           :is="questions[selectedQuestion].component"
           :configs="questions[selectedQuestion].configs"
@@ -92,6 +92,7 @@ export default {
 
     this.$events.off("QUESTION_ANSWERED");
     this.$events.on("QUESTION_ANSWERED", (answer) => {
+      this.show = false
       let payload = {
         userId: this.user.id,
         type: "QUESTION_ANSWERED",
@@ -106,6 +107,7 @@ export default {
         else if(this.selectedQuestion != Object.keys(this.questions).length) {
           this.selectedQuestion = this.selectedQuestion + 1;
           this.number = this.selectedQuestion;
+          this.show = true
         }
       })
       .catch( (error) => {
@@ -113,11 +115,11 @@ export default {
       })
     });
   },
-  mounted() {
-    
+  watch: {
   },
   data() {
     return {
+      show: true,
       number: "1",
       selectedQuestion: 1,
       user: {},
@@ -143,7 +145,7 @@ export default {
         },
         3: {
           title: "Qual o foco da Nextios em serviços de computação em nuvem?",
-          component: lug,
+          component: () => import('../lug'),
           configs: {
             question: 3,
             options: ["cloud pública", "cloud privada/datacenter híbrido"],
@@ -366,7 +368,8 @@ export default {
         -2
       )}.png`);
     },
-  },
+  }
+
 };
 </script>
 
