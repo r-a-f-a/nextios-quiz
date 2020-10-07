@@ -25,6 +25,7 @@ import grid from './componets/grid'
 import players from './componets/players'
 import score from './componets/score'
 export default {
+    name: 'wordswipe',
     components: {
       grid,
       players,
@@ -44,11 +45,14 @@ export default {
             words: []
         }
     },
-    mounted: function () {
+    created: function () {
         this.$events.off('VALIDATE_QUESTION')
         this.$events.on('VALIDATE_QUESTION', () => {
             this.passNextPlayer()
         })
+    },
+    mounted: function () {
+        this.$events.emit("QUESTION_STARTED", this.question)
         // let _this = this;
         console.log(this.$refs)
         gridController = this.$refs.appGrid;
