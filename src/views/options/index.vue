@@ -25,11 +25,14 @@
 export default {
   name: "options",
   props: ["configs"],
-  mounted() {
+  created() {
     this.$events.off("VALIDATE_QUESTION");
     this.$events.on("VALIDATE_QUESTION", () => {
       this.validate();
     });
+  },
+  mounted() {
+    this.$events.emit("QUESTION_STARTED", this.configs.question)
   },
   methods: {
     removeOption(option) {

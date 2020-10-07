@@ -48,8 +48,9 @@ export default {
       this.user = jwt(user, process.env.VUE_APP_SECRET).verify()
     }
   },
-  mounted() {
+  created() {
     this.getUser()
+
     this.$events.off("TIP_QUESTION");
     this.$events.on("TIP_QUESTION", (tip) => {
       this.$notify({
@@ -59,23 +60,27 @@ export default {
         text: tip.text,
       });
     });
+
     this.$events.off("QUESTION_STARTED")
     this.$events.on("QUESTION_STARTED", (question) => {
       let payload = {
         userId: this.user.id,
         type: "QUESTION_STARTED",
         data: {
-          property: question
+          question: question
         }
       }
+      console.log('EVENT', payload)
       this.$api.call("post", "/events", payload)
     });
-     this.$events.off("QUIZ_FINISHED");
+
+    this.$events.off("QUIZ_FINISHED");
     this.$events.on("QUIZ_FINISHED", () => {
       let payload = {
         userId: this.user.id,
         type: "QUIZ_FINISHED",
       }
+      console.log('EVENT', payload)
       this.$api.call("post", "/events", payload)
       .then(() => {
         this.$router.push('/finished')
@@ -84,6 +89,7 @@ export default {
         console.log(error)
       })
     });
+
     this.$events.off("QUESTION_ANSWERED");
     this.$events.on("QUESTION_ANSWERED", (answer) => {
       let payload = {
@@ -91,6 +97,7 @@ export default {
         type: "QUESTION_ANSWERED",
         data: answer
       }
+      console.log('EVENT', payload)
       this.$api.call("post", "/events", payload)
       .then(() => {
         if(answer.question === 10) {
@@ -105,6 +112,9 @@ export default {
         console.log(error)
       })
     });
+  },
+  mounted() {
+    
   },
   data() {
     return {

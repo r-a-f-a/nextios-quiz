@@ -36,12 +36,15 @@ import { Droppable } from '@shopify/draggable'
 export default {
  name: 'Select',
  props: ['configs'],
- mounted() {
-   let _this = this
+ created() {
    this.$events.off("VALIDATE_QUESTION");
    this.$events.on("VALIDATE_QUESTION", () => {
     this.validate();
    });
+ },
+ mounted() {
+   let _this = this
+   this.$events.emit("QUESTION_STARTED", this.configs.question)
    this.$off('DRAG_ANSWER')
    this.$on('DRAG_ANSWER', (payload) => {
       if(payload.phrase){
@@ -117,7 +120,7 @@ export default {
   validate() {
     if(Object.keys(this.mappingOpt).length == this.configs.options.length){
       this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.answer } )
-      this.answer = {}
+      // this.answer = {}
       this.mappingOpt = {}
       this.answerOpt = {}
     } else {

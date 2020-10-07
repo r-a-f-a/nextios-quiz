@@ -24,9 +24,10 @@ import { Droppable } from '@shopify/draggable'
 export default {
  name: "drag",
  created() {
-  this.$events.emit("QUESTION_STARTED", this.question)
+  // this.$events.emit("QUESTION_STARTED", this.question)
  },
  mounted() {
+  this.$events.emit("QUESTION_STARTED", this.question)
   let _this = this
   this.$events.off('VALIDATE_QUESTION')
   this.$events.on('VALIDATE_QUESTION', () => {
