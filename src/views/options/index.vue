@@ -62,7 +62,7 @@ export default {
         this.answers.length > 0 &&
         this.answers.length <= this.configs.chooseLimit
       ) {
-        this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.answer } )
+        this.$events.emit('QUESTION_ANSWERED', { question: this.configs.question, response: this.answers } )
         this.answers = [];
       } else {
         this.$events.emit("TIP_QUESTION", this.tip);

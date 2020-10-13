@@ -14,7 +14,6 @@
           :is="questions[selectedQuestion].component"
           :configs="questions[selectedQuestion].configs"
         ></component>
-        <!-- <button @click="prev()" class="btn">Voltar</button> -->
         <div class="footer">
           <button @click="next()" class="btn">Avançar</button>
         </div>
@@ -34,12 +33,22 @@ import jwt from '@allinmkt/jwt'
 export default {
   name: "question",
   methods: {
-    // prev(){
-    //   if(this.selectedQuestion > 1){
-    //     this.selectedQuestion = this.selectedQuestion - 1
-    //     this.number =  this.selectedQuestion
-    //   }
-    // },
+    getProgress() {
+      let payload = {
+        userId: this.user.id,
+      }
+      this.$api.call("get", "/progress", payload)
+      .then( (response) => {
+        if( response.data === ""){
+          this.selectedQuestion = 1
+        } else if(response.data.result.data.question === 10){
+          this.$router.push('/finished')
+        } else{
+          this.selectedQuestion = response.data.result.data.question + 1
+        }
+        
+      })
+    },
     next() {
       this.$events.emit("VALIDATE_QUESTION");
     },
@@ -50,7 +59,7 @@ export default {
   },
   created() {
     this.getUser()
-
+    this.getProgress()
     this.$events.off("TIP_QUESTION");
     this.$events.on("TIP_QUESTION", (tip) => {
       this.$notify({
@@ -70,7 +79,6 @@ export default {
           question: question
         }
       }
-      console.log('EVENT', payload)
       this.$api.call("post", "/events", payload)
     });
 
@@ -80,7 +88,6 @@ export default {
         userId: this.user.id,
         type: "QUIZ_FINISHED",
       }
-      console.log('EVENT', payload)
       this.$api.call("post", "/events", payload)
       .then(() => {
         this.$router.push('/finished')

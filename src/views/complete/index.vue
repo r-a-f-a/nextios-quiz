@@ -39,6 +39,7 @@ export default {
   name: "complete",
   props: ["configs"],
   mounted() {
+    this.$events.emit("QUESTION_STARTED", this.configs.question)
     this.$events.off("VALIDATE_QUESTION");
     this.$events.on("VALIDATE_QUESTION", () => {
       this.validate();

@@ -1,16 +1,60 @@
 <template>
   <div class="start-form">
-   <h1 class="title">Parabéns !!</h1>
+   <h1 class="title">Parabéns!!!</h1>
     <span class="span-text">
-     <p class="p-intro">Você demorou 1:32h para finalizar o desafio.</p>
-     <p class="p-intro">Seu score foi 8.9 de 10.0.</p>
+     <p class="p-intro">Você demorou {{ convertMinute }} para finalizar o desafio.</p>
+     <p class="p-intro">Seu score foi {{ result }} de 10.</p>
     </span>
   </div>
 </template>
 
 <script>
+import jwt from '@allinmkt/jwt'
 export default {
-  name: 'Finished'
+  name: 'Finished',
+  data() {
+    return {
+      user: '',
+      convert: '',
+      result: 0
+    }
+  },
+  methods: {
+    getUser() {
+      var user = localStorage.getItem("_user")
+      this.user = jwt(user, process.env.VUE_APP_SECRET).verify()
+    },
+    getResponse() {
+      let payload = {
+        userId: this.user.id,
+      }
+      this.$api.call("get", "/results", payload)
+      .then( (response) => {
+        this.convert= response.data.result.duration
+        this.result = response.data.result.hits.length
+      })
+    }
+  },
+  computed:{ 
+    convertMinute(with_seg = true){
+      let hours = Math.floor( this.convert / 3600 );
+      let minutes = Math.floor( (this.convert % 3600) / 60 );
+      let seconds = this.convert % 60;
+        
+      minutes = minutes < 10 ? '0' + minutes : minutes;      
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      hours = hours < 10 ? '0' + hours : hours;
+        
+      if(with_seg){
+        return  hours + ":" + minutes + ":" + parseFloat(seconds).toFixed(0);
+      }
+      return  hours + ":" + minutes;
+    }
+  },
+  created() {
+    this.getUser()
+    this.getResponse()
+  }
 }
 </script>
 
@@ -35,21 +79,7 @@ export default {
 .span-text{
  color: #fff;
  text-shadow: 2px 2px #000000cc;
- text-align: center;
+ text-align: left;
 }
-.center{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.btn{
-  background-color: #64e4ab;
-  border-color:#64e4ab;
-  font-size: 18px;
-  color: #fff;
-  font-weight: bold;
-  margin-top: 15px;
-  text-shadow: 1px 1px #000000cc;
-}
+
 </style>
