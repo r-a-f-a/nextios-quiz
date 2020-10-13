@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  nextios-prod:
+       build:
+          context: ../../.
+          dockerfile: ./docker/prod/Dockerfile
+       container_name: nextios-prod
+       command: bash -c "npm run start"
+       environment:
+         - APP_ENV=prod
+         - TERM=xterm-256color
+         - PORT:80
+       privileged: true
+       restart: always
+       expose:
+         - "80"
+         - "443"
+       ports:
+         - "8080:80"
+         - "4431:443"
