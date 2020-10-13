@@ -7,7 +7,7 @@
         type="text"
         class="form-control code"
         placeholder="Ex: 4VV7XT"
-        v-model="code"
+        v-model.trim="code"
         required
       >
     </div>

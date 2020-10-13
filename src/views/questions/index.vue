@@ -237,7 +237,7 @@ export default {
           }
         },
         5: {
-          title: "Em quais segmentos a Nextios atuará?",
+          title: "Em quais segmentos a Nextios atuará? Clique e araste para selecionar as palavras.",
           component: wordSwipe,
         },
         6: {
@@ -381,6 +381,19 @@ export default {
 </script>
 
 <style>
+@media only screen and (min-height: 768px) {
+  .footer {
+    position: absolute;
+    margin-top: 412px !important;
+  }
+
+  #question img{
+    width: 22% !important;
+    height: auto !important;
+    position: fixed !important;
+  }
+}
+
 .btn {
   background-color: #1e3344;
   color: #fff;
@@ -421,6 +434,9 @@ export default {
 }
 
 #question-title {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin-top: 40px;
   background-image: url("../../../public/img/faixa_pergunta.png") !important;
   background-position: right;
@@ -433,7 +449,6 @@ export default {
   margin: 30px;
   margin-left: 7%;
   /* border: 1px solid black; */
-  position: absolute;
   font-size: 25px;
   font-weight: bold;
   color: #1e3344;

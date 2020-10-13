@@ -103,22 +103,35 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (min-height: 768px) {
+  .boxItem{
+    /* display: block; */
+    border: 2px solid #1e3344;
+    margin-right: 3em!important;
+    position: relative;
+    margin-bottom: 15px!important;
+    height: 80px!important;
+    width: 220px!important;
+    float: left;
+  }
+}
 
 .boxItem .year{
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently */
-    color: #4fe4ab;
-    text-align: center;
-    font-size: 40px;
-    font-weight: bold;
-    padding: 10px;
-    display: block;
-    text-shadow: 2px 2px #1e3344;
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently */
+  color: #4fe4ab;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  padding: 10px;
+  display: block;
+  text-shadow: 2px 2px #1e3344;
 }
+
 .timeline-answer{
   float:left;
   width: 220px;

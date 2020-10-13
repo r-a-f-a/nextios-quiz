@@ -27,12 +27,12 @@ export default {
 
 <style lang="scss">
 #app {
-    height: 100%;
-    width:100%;
-    // background-image: url('../public/img/home_background.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  // background-image: url('../public/img/home_background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -41,5 +41,17 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+@media only screen and (min-height: 768px) {
+  #app {
+    height: 86%!important;
+    width:100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-y: auto;
+  }
 }
 </style>
