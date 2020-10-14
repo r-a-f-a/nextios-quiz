@@ -382,10 +382,6 @@ export default {
 
 <style>
 @media only screen and (max-height: 768px) {
-  .footer {
-    position: absolute;
-    margin-top: 412px !important;
-  }
 
   #question img{
     width: 22% !important;
@@ -412,11 +408,12 @@ export default {
   height: 100%;
 }
 
-.footer {
-  position: absolute;
-  margin-top: 499px;
-  margin-left: 706px;
-}
+  .footer {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
+
 
 .left {
   display: block;

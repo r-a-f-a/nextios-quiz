@@ -45,7 +45,7 @@ export default {
 
 @media only screen and (max-height: 768px) {
   #app {
-    height: 86%!important;
+    height: 100%!important;
     width:100%;
     background-position: center;
     background-repeat: no-repeat;
