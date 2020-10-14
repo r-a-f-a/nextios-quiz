@@ -1,7 +1,7 @@
 <template>
   <div class="question">
     <div class="left">
-      <div id="question">
+      <div id="question" v-if="selectedQuestion">
         <img :src="imageQuestion" />
       </div>
     </div>
@@ -46,7 +46,7 @@ export default {
         } else{
           this.selectedQuestion = response.data.result.data.question + 1
         }
-        
+        this.show = true
       })
     },
     next() {
@@ -126,9 +126,9 @@ export default {
   },
   data() {
     return {
-      show: true,
+      show: false,
       number: "1",
-      selectedQuestion: 1,
+      selectedQuestion: false,
       user: {},
       questions: {
         1: {

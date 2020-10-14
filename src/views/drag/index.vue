@@ -93,7 +93,7 @@ export default {
       'B' :  "Locaweb IDC inicia uma jornada de reestruturação para atender o mercado corporativo e se torna Locaweb Soluções Corporativas",
       'C' :  "Locaweb Soluções Corporativas passa por um rebranding de marca e muda seu nome para Locaweb Corp",
       'D' :  "Locaweb Corp adquire a Cluster2GO, fruto da fusão entre Ananke, Primehost e ION/NOVA ION e passa a oferecer serviços de nuvem pública e privada.",
-      'E' : "Locaweb Corp Cluster2GO inicia uma jornada de evolução, rumo a um futuro tecnológico, eficiente e sustentável e torna-se a Nextios, que vai muito além de serviços de infraestrutura, datacenter e cloud."
+      'E' : "Locaweb Corp Cluster2GO inicia uma jornada de evolução, rumo a um futuro tecnológico, eficiente e sustentável e torna-se a Nextios."
     },
     years: ['2003','2014','2017','2018','2020'],
     answer: {}
