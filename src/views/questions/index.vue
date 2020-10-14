@@ -381,7 +381,7 @@ export default {
 </script>
 
 <style>
-@media only screen and (min-height: 768px) {
+@media only screen and (max-height: 768px) {
   .footer {
     position: absolute;
     margin-top: 412px !important;

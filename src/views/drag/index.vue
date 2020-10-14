@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (min-height: 768px) {
+@media only screen and (max-height: 768px) {
   .boxItem{
     /* display: block; */
     border: 2px solid #1e3344;

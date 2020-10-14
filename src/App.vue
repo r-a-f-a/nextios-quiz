@@ -43,7 +43,7 @@ export default {
   opacity: 0;
 }
 
-@media only screen and (min-height: 768px) {
+@media only screen and (max-height: 768px) {
   #app {
     height: 86%!important;
     width:100%;
