@@ -300,7 +300,7 @@ export default {
                   draggable: true
                 },
                 {
-                  value: 'Parceiros e profissionais de',
+                  value: ', parceiros e profissionais de',
                   draggable: false
                 },
                 {
