@@ -1,7 +1,7 @@
 <template>
   <div id="app"  :style="{ backgroundImage: 'url(' + image + ')' }">
     <template v-if="image == '/img/home_background.2f3e908f.png'">
-      <img class="logo-img" src="../public/img/logo.png" alt=" Logo" width="350" height="100">
+      <img class="logo-img" src="../public/img/logo.png" alt=" Logo" >
     </template>
     <router-view></router-view>
     <notifications group="foo" position="bottom right" />
@@ -33,6 +33,8 @@ export default {
   position: absolute;
   bottom: 30px;
   right: 20px;
+  width: 25%;
+  height: auto;
 }
 #app {
   height: 100vh;
